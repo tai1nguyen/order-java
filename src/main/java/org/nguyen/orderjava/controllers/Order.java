@@ -1,6 +1,6 @@
 package org.nguyen.orderjava.controllers;
 
-import org.nguyen.orderjava.models.jpa.OrderEntry;
+import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class Order {
     }
 
     @GetMapping
-    public OrderEntry getOrderById(@RequestParam String id) {
+    public OrderData getOrderById(@RequestParam String id) {
         return orderService.getOrderById(id);
     }
 }

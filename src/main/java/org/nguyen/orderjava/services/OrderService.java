@@ -1,12 +1,8 @@
 package org.nguyen.orderjava.services;
 
-import org.nguyen.orderjava.models.jpa.OrderEntry;
+import org.nguyen.orderjava.models.OrderData;
 
 public interface OrderService {
 
-    OrderEntry getOrderById(String id);
-
-    void deleteOrderById(String id);
-
-    void updateOrderById(String id);
+    OrderData getOrderById(String id);
 }

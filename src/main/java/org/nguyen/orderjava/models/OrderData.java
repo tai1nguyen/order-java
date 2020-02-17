@@ -1,11 +1,12 @@
 package org.nguyen.orderjava.models;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class OrderData {
     private List<Bean> beans;
-    private Integer price;
+    private BigDecimal price = new BigDecimal(0);
     private Date orderDate;
     private Date deliverDate;
     private boolean isComplete;
@@ -18,11 +19,11 @@ public class OrderData {
         this.beans = beans;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(final Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -30,7 +31,7 @@ public class OrderData {
         return orderDate;
     }
 
-    public void setOrderDate(final Date orderDate) {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 

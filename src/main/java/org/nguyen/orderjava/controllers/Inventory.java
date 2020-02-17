@@ -3,8 +3,8 @@ package org.nguyen.orderjava.controllers;
 import java.util.List;
 
 import org.nguyen.orderjava.models.Bean.BeanType;
-import org.nguyen.orderjava.models.jpa.BeanEntry;
-import org.nguyen.orderjava.services.InventoryService;
+import org.nguyen.orderjava.models.jpa.InventoryEntry;
+import org.nguyen.orderjava.services.InventoryRepoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/inventory")
 public class Inventory {
 
-    private final InventoryService inventoryService;
+    private final InventoryRepoService inventoryRepoService;
 
-    Inventory(InventoryService inventoryService) {
-        this.inventoryService = inventoryService;
+    Inventory(InventoryRepoService inventoryRepoService) {
+        this.inventoryRepoService = inventoryRepoService;
     }
 
     @GetMapping("/bean")
-    public BeanEntry getInventoryDataForBeanType(@RequestParam String type) {
-        return inventoryService.getBeanByType(BeanType.getType(type));
+    public InventoryEntry getInventoryDataForBeanType(@RequestParam String type) {
+        return inventoryRepoService.getBeanByType(BeanType.getType(type));
     }
 
-    @GetMapping("beans")
-    public List<BeanEntry> getInventory() {
-        return inventoryService.getAllBeans();
+    @GetMapping("/beans")
+    public List<InventoryEntry> getInventory() {
+        return inventoryRepoService.getAllBeans();
     }
 }

@@ -1,9 +1,11 @@
 package org.nguyen.orderjava.models;
 
+import java.math.BigDecimal;
+
 public class Bean {
-    private Integer weight;
+    private BigDecimal weightPerUnit = new BigDecimal(0);
+    private BigDecimal pricePerUnit = new BigDecimal(0);
     private Bean.BeanType type;
-    private Integer pricePerUnit;
     private Integer units;
 
     public enum BeanType {
@@ -19,7 +21,7 @@ public class Bean {
         }
 
         public String getName() {
-            return this.name;
+            return name;
         }
 
         public static BeanType getType(String type) {
@@ -33,28 +35,28 @@ public class Bean {
         }
     }
 
-    public Integer getWeight() {
-        return weight;
+    public BigDecimal getWeightPerUnit() {
+        return weightPerUnit;
     }
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
+    public void setWeightPerUnit(BigDecimal weightPerUnit) {
+        this.weightPerUnit = weightPerUnit;
     }
 
-    public BeanType getType() {
-        return type;
-    }
-
-    public void setType(BeanType type) {
-        this.type = type;
-    }
-
-    public Integer getPricePerUnit() {
+    public BigDecimal getPricePerUnit() {
         return pricePerUnit;
     }
 
-    public void setPricePerUnit(Integer pricePerUnit) {
+    public void setPricePerUnit(BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
+    }
+
+    public Bean.BeanType getType() {
+        return type;
+    }
+
+    public void setType(Bean.BeanType type) {
+        this.type = type;
     }
 
     public Integer getUnits() {

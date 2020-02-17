@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.nguyen.orderjava.models.Bean.BeanType;
+
 @Entity
 @Table(name = "INVENTORY")
-public class BeanEntry {
+public class InventoryEntry {
 
     @Id
     @Column(name="BEAN_TYPE")
@@ -22,12 +24,12 @@ public class BeanEntry {
     @Column(name="QUANTITY")
     private String quantity;
 
-    public String getBeanType() {
-        return beanType;
+    public BeanType getBeanType() {
+        return BeanType.getType(beanType);
     }
 
-    public void setBeanType(String beanType) {
-        this.beanType = beanType;
+    public void setBeanType(BeanType beanType) {
+        this.beanType = beanType.getName();
     }
 
     public String getWeightPerUnit() {

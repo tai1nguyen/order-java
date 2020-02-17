@@ -6,24 +6,24 @@ import java.util.Optional;
 
 import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.nguyen.orderjava.models.Bean.BeanType;
-import org.nguyen.orderjava.models.jpa.BeanEntry;
+import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InventoryServiceImpl implements InventoryService {
+public class InventoryRepoServiceImpl implements InventoryRepoService {
 
     private final InventoryRepository inventoryRepo;
 
     @Autowired
-    InventoryServiceImpl(InventoryRepository inventoryRepository) {
+    InventoryRepoServiceImpl(InventoryRepository inventoryRepository) {
         this.inventoryRepo = inventoryRepository;
     }
 
     @Override
-    public BeanEntry getBeanByType(BeanType beanType) {
-        BeanEntry result = null;
-        Optional<BeanEntry> entry = inventoryRepo.findById(beanType.getName());
+    public InventoryEntry getBeanByType(BeanType beanType) {
+        InventoryEntry result = null;
+        Optional<InventoryEntry> entry = inventoryRepo.findById(beanType.getName());
 
         if (entry.isPresent()) {
             result = entry.get();
@@ -33,12 +33,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public List<BeanEntry> getAllBeans() {
-        List<BeanEntry> inventory = new ArrayList<BeanEntry>();
+    public List<InventoryEntry> getAllBeans() {
+        List<InventoryEntry> inventory = new ArrayList<InventoryEntry>();
 
-        Iterable<BeanEntry> iterator = inventoryRepo.findAll();
+        Iterable<InventoryEntry> iterator = inventoryRepo.findAll();
 
-        for (BeanEntry entry : iterator) {
+        for (InventoryEntry entry : iterator) {
             inventory.add(entry);
         }
 

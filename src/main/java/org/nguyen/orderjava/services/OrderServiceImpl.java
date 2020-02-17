@@ -1,8 +1,9 @@
 package org.nguyen.orderjava.services;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.nguyen.orderjava.repositories.OrderRepository;
+import org.nguyen.orderjava.models.OrderData;
+import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.models.jpa.OrderEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,33 +11,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepo;
+    private final OrderRepoService orderRepoService;
+    private final InventoryRepoService inventoryRepoService;
+    private final OrderMapperService orderMapperService;
 
     @Autowired
-    OrderServiceImpl(OrderRepository orderRepository) {
-        this.orderRepo = orderRepository;
+    OrderServiceImpl(
+        OrderRepoService orderRepoService,
+        InventoryRepoService inventoryRepoService,
+        OrderMapperService orderMapperService
+    ) {
+        this.orderRepoService = orderRepoService;
+        this.inventoryRepoService = inventoryRepoService;
+        this.orderMapperService = orderMapperService;
     }
 
     @Override
-    public OrderEntry getOrderById(String id) {
-        OrderEntry orderEntry = null;
-        Optional<OrderEntry> entry = orderRepo.findById(id);
+    public OrderData getOrderById(String id) {
+        OrderEntry orderEntry = orderRepoService.getOrderById(id);
+        List<InventoryEntry> beanData = inventoryRepoService.getAllBeans();
 
-        if (entry.isPresent()) {
-            orderEntry = entry.get();
-        }
-
-        return orderEntry;
+        return orderMapperService.mapToOrderData(orderEntry, beanData);
     }
-
-    @Override
-    public void deleteOrderById(String id) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void updateOrderById(String id) {
-        // TODO Auto-generated method stub
-    }
-    
 }
