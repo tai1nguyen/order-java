@@ -1,12 +1,41 @@
 package org.nguyen.orderjava.services;
 
+import static org.nguyen.orderjava.literals.Services.ORDER_REPO_SERVICE;
+
+import java.util.Optional;
+
 import org.nguyen.orderjava.models.jpa.OrderEntry;
+import org.nguyen.orderjava.repositories.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface OrderRepoService {
+@Service(ORDER_REPO_SERVICE)
+public class OrderRepoService {
 
-    OrderEntry getOrderById(String id);
+    private final OrderRepository orderRepo;
 
-    void deleteOrderById(String id);
+    @Autowired
+    OrderRepoService(OrderRepository orderRepository) {
+        this.orderRepo = orderRepository;
+    }
 
-    void updateOrderById(String id);
+    public OrderEntry getOrderById(String id) {
+        OrderEntry orderEntry = null;
+        Optional<OrderEntry> entry = orderRepo.findById(id);
+
+        if (entry.isPresent()) {
+            orderEntry = entry.get();
+        }
+
+        return orderEntry;
+    }
+
+    public void deleteOrderById(String id) {
+        // TODO Auto-generated method stub
+    }
+
+    public void updateOrderById(String id) {
+        // TODO Auto-generated method stub
+    }
+    
 }

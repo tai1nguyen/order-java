@@ -18,8 +18,13 @@ dependencies {
         'org.springframework.boot:spring-boot-starter-data-jpa'
     )
     runtimeOnly 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'io.rest-assured:rest-assured:4.2.0'
+    testImplementation 'io.rest-assured:json-path:4.2.0'
+    testImplementation 'io.rest-assured:xml-path:4.2.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: 'junit', module: 'junit'
 	}
 }
 
