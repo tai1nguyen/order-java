@@ -1,10 +1,13 @@
 package org.nguyen.orderjava.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +29,7 @@ public class InventoryRepoServiceTest {
     InventoryRepository inventoryRepository;
 
     @Test
-    void getEntryByType_ShouldReturnBeanData_GivenBeanDataExistsInRepo() {
+    void findEntryByType_ShouldReturnBeanData_GivenBeanDataExistsInRepo() {
         InventoryEntry entry = new InventoryEntry();
         Optional<InventoryEntry> mock = null;
         
@@ -39,7 +42,7 @@ public class InventoryRepoServiceTest {
 
         when(inventoryRepository.findById(BeanType.ARABICA.getName())).thenReturn(mock);
 
-        InventoryEntry result = inventoryRepoService.getEntryByType(BeanType.ARABICA);
+        InventoryEntry result = inventoryRepoService.findEntryByType(BeanType.ARABICA);
 
         assertNotNull(result);
         assertEquals(entry.getBeanType(), BeanType.ARABICA);
@@ -49,23 +52,42 @@ public class InventoryRepoServiceTest {
     }
 
     @Test
-    void getEntryByType_ShouldReturnNull_GivenBeanDataDoesNotExistsInRepo() {
+    void findEntryByType_ShouldReturnNull_GivenBeanDataDoesNotExistsInRepo() {
         Optional<InventoryEntry> mock = Optional.ofNullable(null);
 
         when(inventoryRepository.findById(BeanType.ARABICA.getName())).thenReturn(mock);
 
-        InventoryEntry result = inventoryRepoService.getEntryByType(BeanType.ARABICA);
+        InventoryEntry result = inventoryRepoService.findEntryByType(BeanType.ARABICA);
 
         assertNull(result);
     }
 
     @Test
-    void getAllEntries_ShouldReturnAllEntries_GivenBeanDataExistsInRepo() {
+    void findAllEntries_ShouldReturnAllEntries_GivenBeanDataExistsInRepo() {
+        Iterable<InventoryEntry> mock = getMockInventoryList();
 
+        when(inventoryRepository.findAll()).thenReturn(mock);
+
+        List<InventoryEntry> entryList = inventoryRepoService.findAllEntries();
+
+        assertFalse(entryList.isEmpty());
+        assertEquals(entryList.size(), 3);
     }
 
-    @Test
-    void getAllEntries_ShouldNotReturnEntries_GivenBeadDataDoesNotExistInRepo() {
-        
+    List<InventoryEntry> getMockInventoryList() {
+        List<InventoryEntry> list = new ArrayList<InventoryEntry>();
+        InventoryEntry mockOne = new InventoryEntry();
+        InventoryEntry mockTwo = new InventoryEntry();
+        InventoryEntry mockThree = new InventoryEntry();
+
+        mockOne.setBeanType(BeanType.ARABICA);
+        mockTwo.setBeanType(BeanType.EXCELSA);
+        mockThree.setBeanType(BeanType.LIBERIAN);
+
+        list.add(mockOne);
+        list.add(mockTwo);
+        list.add(mockThree);
+
+        return list;
     }
 }

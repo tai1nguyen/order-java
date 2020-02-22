@@ -2,8 +2,12 @@ package org.nguyen.orderjava.controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +42,7 @@ public class InventoryTest {
         mock.setWeightPerUnit("1");
         mock.setQuantity("1");
 
-        when(repoService.getEntryByType(any())).thenReturn(mock);
+        when(repoService.findEntryByType(any())).thenReturn(mock);
 
         given()
             .port(port)
@@ -53,5 +57,35 @@ public class InventoryTest {
             .body("pricePerUnit", equalTo("0"))
             .body("weightPerUnit", equalTo("1"))
             .body("quantity", equalTo("1"));
+    }
+
+    @Test
+    void getAllInventoryData_ShouldReturnAListOfBeanData() {
+        List<InventoryEntry> list = new ArrayList<>();
+        InventoryEntry mock = new InventoryEntry();
+        
+        mock.setBeanType(BeanType.ARABICA);
+        mock.setPricePerUnit("0");
+        mock.setWeightPerUnit("1");
+        mock.setQuantity("1");
+
+        list.add(mock);
+
+        when(repoService.findAllEntries()).thenReturn(list);
+
+        List<InventoryEntry> result = given()
+            .port(port)
+        .when()
+            .get("/inventory/beans")
+        .then()
+            .assertThat()
+            .statusCode(200)
+            .contentType("application/json")
+            .extract()
+            .response()
+            .jsonPath()
+            .getList("$");
+
+        assertEquals(result.size(), 1);
     }
 }

@@ -19,7 +19,7 @@ public class OrderMapperService {
 
     public OrderData mapToOrderData(OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
         List<OrderContentEntry> contentEntry = orderEntry.getBeans();
-        List<Bean> beans = buildBeansList(inventoryEntries, contentEntry);
+        List<Bean> beans = buildBeanList(inventoryEntries, contentEntry);
         BigDecimal price = getTotalPrice(beans);
 
         OrderData orderData = new OrderData();
@@ -30,7 +30,7 @@ public class OrderMapperService {
         return orderData;
     }
 
-    private List<Bean> buildBeansList(List<InventoryEntry> inventory, List<OrderContentEntry> contentEntries) {
+    private List<Bean> buildBeanList(List<InventoryEntry> inventory, List<OrderContentEntry> contentEntries) {
         List<Bean> beans = new ArrayList<Bean>();
         
         for (OrderContentEntry content : contentEntries) {

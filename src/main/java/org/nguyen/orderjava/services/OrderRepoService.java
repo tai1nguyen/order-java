@@ -19,7 +19,7 @@ public class OrderRepoService {
         this.orderRepo = orderRepository;
     }
 
-    public OrderEntry getOrderById(String id) {
+    public OrderEntry findOrderById(String id) {
         OrderEntry orderEntry = null;
         Optional<OrderEntry> entry = orderRepo.findById(id);
 

@@ -22,7 +22,7 @@ public class InventoryRepoService {
         this.inventoryRepo = inventoryRepository;
     }
 
-    public InventoryEntry getEntryByType(BeanType beanType) {
+    public InventoryEntry findEntryByType(BeanType beanType) {
         InventoryEntry result = null;
         Optional<InventoryEntry> entry = inventoryRepo.findById(beanType.getName());
 
@@ -33,7 +33,7 @@ public class InventoryRepoService {
         return result;
     }
 
-    public List<InventoryEntry> getAllEntries() {
+    public List<InventoryEntry> findAllEntries() {
         List<InventoryEntry> inventory = new ArrayList<InventoryEntry>();
 
         Iterable<InventoryEntry> iterator = inventoryRepo.findAll();

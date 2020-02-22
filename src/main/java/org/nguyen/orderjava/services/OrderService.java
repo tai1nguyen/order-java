@@ -29,8 +29,8 @@ public class OrderService {
     }
 
     public OrderData getOrderById(String id) {
-        OrderEntry orderEntry = orderRepoService.getOrderById(id);
-        List<InventoryEntry> beanData = inventoryRepoService.getAllEntries();
+        OrderEntry orderEntry = orderRepoService.findOrderById(id);
+        List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
 
         return orderMapperService.mapToOrderData(orderEntry, beanData);
     }

@@ -22,13 +22,13 @@ public class Inventory {
 
     @GetMapping("/bean")
     public InventoryEntry getInventoryDataForBeanType(@RequestParam String type) {
-        InventoryEntry entry = inventoryRepoService.getEntryByType(BeanType.getType(type));
+        InventoryEntry entry = inventoryRepoService.findEntryByType(BeanType.getType(type));
 
         return entry;
     }
 
     @GetMapping("/beans")
     public List<InventoryEntry> getInventory() {
-        return inventoryRepoService.getAllEntries();
+        return inventoryRepoService.findAllEntries();
     }
 }
