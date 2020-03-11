@@ -29,13 +29,4 @@ public class OrderRepoService {
 
         return orderEntry;
     }
-
-    public void deleteOrderById(String id) {
-        // TODO Auto-generated method stub
-    }
-
-    public void updateOrderById(String id) {
-        // TODO Auto-generated method stub
-    }
-    
 }

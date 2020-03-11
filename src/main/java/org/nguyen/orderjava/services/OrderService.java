@@ -4,6 +4,7 @@ import static org.nguyen.orderjava.literals.Services.ORDER_SERVICE;
 
 import java.util.List;
 
+import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.models.jpa.OrderEntry;
@@ -28,10 +29,16 @@ public class OrderService {
         this.orderMapperService = orderMapperService;
     }
 
-    public OrderData getOrderById(String id) {
+    public OrderData getOrderById(String id) throws OrderNotFoundException {
         OrderEntry orderEntry = orderRepoService.findOrderById(id);
-        List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
 
-        return orderMapperService.mapToOrderData(orderEntry, beanData);
+        if (orderEntry != null) {
+            List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
+
+            return orderMapperService.mapToOrderData(id, orderEntry, beanData);
+        }
+        else {
+            throw new OrderNotFoundException();
+        }
     }
 }

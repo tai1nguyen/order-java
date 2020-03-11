@@ -66,4 +66,28 @@ public class Bean {
     public void setUnits(Integer units) {
         this.units = units;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Bean) {
+            Bean suspect = (Bean) o;
+
+            return isEqual(this.pricePerUnit, suspect.getPricePerUnit()) &&
+                isEqual(this.weightPerUnit, suspect.getWeightPerUnit()) &&
+                isEqual(this.units, suspect.getUnits()) &&
+                isEqual(this.type, suspect.getType());
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean isEqual(Object expected, Object suspect) {
+        if (expected != null) {
+            return expected.equals(suspect);
+        }
+        else {
+            return expected == suspect;
+        }
+    }
 }

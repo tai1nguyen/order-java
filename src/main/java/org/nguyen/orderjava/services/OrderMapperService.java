@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service(ORDER_MAPPER_SERVICE)
 public class OrderMapperService {
 
-    public OrderData mapToOrderData(OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
+    public OrderData mapToOrderData(String id, OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
         List<OrderContentEntry> contentEntry = orderEntry.getBeans();
         List<Bean> beans = buildBeanList(inventoryEntries, contentEntry);
         BigDecimal price = getTotalPrice(beans);
@@ -26,6 +26,7 @@ public class OrderMapperService {
 
         orderData.setBeans(beans);
         orderData.setPrice(price);
+        orderData.setId(id);
 
         return orderData;
     }
