@@ -65,7 +65,7 @@ public class OrderServiceTest {
 
         orderService.getOrderById("test");
 
-        verify(orderMapperService, times(1)).mapToOrderData("test", mockOrderEntry, mockInventoryList);
+        verify(orderMapperService, times(1)).mapOrderEntryToOrderData("test", mockOrderEntry, mockInventoryList);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class OrderServiceTest {
             error = ex;
         }
 
-        verify(orderMapperService, times(0)).mapToOrderData(any(), any(), any());
+        verify(orderMapperService, times(0)).mapOrderEntryToOrderData(any(), any(), any());
         verify(inventoryRepoService, times(0)).findAllEntries();
 
         assertNotNull(error);

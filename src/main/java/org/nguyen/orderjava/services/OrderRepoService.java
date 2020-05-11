@@ -29,4 +29,10 @@ public class OrderRepoService {
 
         return orderEntry;
     }
+
+    public String saveOrder(OrderEntry orderEntry) {
+        OrderEntry savedEntity = orderRepo.save(orderEntry);
+
+        return savedEntity.getId();
+    }
 }

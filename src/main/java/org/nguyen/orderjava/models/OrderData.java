@@ -12,6 +12,7 @@ public class OrderData {
     private Date orderDate;
     private Date deliverDate;
     private boolean isComplete;
+    private String orderedBy;
     private String id;
 
     public List<Bean> getBeans() {
@@ -52,6 +53,14 @@ public class OrderData {
 
     public void setComplete(boolean isComplete) {
         this.isComplete = isComplete;
+    }
+
+    public String getOrderedBy() {
+        return orderedBy;
+    }
+
+    public void setOrderedBy(String orderedBy) {
+        this.orderedBy = orderedBy;
     }
 
     public String getId() {

@@ -35,10 +35,17 @@ public class OrderService {
         if (orderEntry != null) {
             List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
 
-            return orderMapperService.mapToOrderData(id, orderEntry, beanData);
+            return orderMapperService.mapOrderEntryToOrderData(id, orderEntry, beanData);
         }
         else {
             throw new OrderNotFoundException();
         }
+    }
+
+    public String saveOrder(OrderData orderData) {
+        List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
+        OrderEntry orderEntry = orderMapperService.mapOrderDataToOrderEntry(orderData, beanData);
+
+        return orderRepoService.saveOrder(orderEntry);
     }
 }

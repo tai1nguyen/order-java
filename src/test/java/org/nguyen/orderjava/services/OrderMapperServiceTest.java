@@ -24,7 +24,7 @@ public class OrderMapperServiceTest {
     OrderMapperService orderMapperService;
 
     @Test
-    void mapToOrderData_ShouldReturnOrderData_GivenOrderEntryAndBeanData() {
+    void mapOrderEntryToOrderData_ShouldReturnOrderData_GivenOrderEntryAndBeanData() {
         List<Bean> expectedBeans = new ArrayList<>();
         OrderData expectedOrder = new OrderData();
         Bean expectedBean = new Bean();
@@ -40,7 +40,7 @@ public class OrderMapperServiceTest {
         expectedOrder.setPrice(new BigDecimal("1.05"));
         expectedOrder.setBeans(expectedBeans);
 
-        OrderData result = orderMapperService.mapToOrderData("1", mockOrderEntry(), mockBeans());
+        OrderData result = orderMapperService.mapOrderEntryToOrderData("1", mockOrderEntry(), mockBeans());
 
         assertEquals(expectedOrder, result);
     }

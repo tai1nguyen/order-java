@@ -17,13 +17,22 @@ import org.springframework.stereotype.Service;
 @Service(ORDER_MAPPER_SERVICE)
 public class OrderMapperService {
 
-    public OrderData mapToOrderData(String id, OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
+    /**
+     * Maps an order entry from the database into an object
+     * that can be consumed by the client.
+     * @param id
+     * @param orderEntry
+     * @param inventoryEntries
+     * @return OrderData
+     */
+    public OrderData mapOrderEntryToOrderData(String id, OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
         List<OrderContentEntry> contentEntry = orderEntry.getBeans();
         List<Bean> beans = buildBeanList(inventoryEntries, contentEntry);
         BigDecimal price = getTotalPrice(beans);
 
         OrderData orderData = new OrderData();
 
+        orderData.setOrderedBy(orderEntry.getOrderedBy());
         orderData.setBeans(beans);
         orderData.setPrice(price);
         orderData.setId(id);
@@ -31,13 +40,29 @@ public class OrderMapperService {
         return orderData;
     }
 
+    /**
+     * Takes order data from the client and prepares it
+     * for insertion into the database.
+     * @param orderData
+     * @param inventoryEntries
+     * @return OrderEntry
+     */
+    public OrderEntry mapOrderDataToOrderEntry(OrderData orderData, List<InventoryEntry> inventoryEntries) {
+        List<Bean> beans = orderData.getBeans();
+
+        // The IDs of the order content entry and the order entry will be set by the JPA layer.
+        List<OrderContentEntry> contentEntryList = buildOrderContentList(inventoryEntries, beans);
+        OrderEntry orderEntry = buildOrderEntry(orderData, contentEntryList);
+        
+        return orderEntry;
+    }
+
     private List<Bean> buildBeanList(List<InventoryEntry> inventory, List<OrderContentEntry> contentEntries) {
-        List<Bean> beans = new ArrayList<Bean>();
+        List<Bean> beans = new ArrayList<>();
         
         for (OrderContentEntry content : contentEntries) {
             BeanType type = BeanType.getType(content.getBeanType());
             InventoryEntry beanData = findBeanDataByType(inventory, type);
-
             Bean bean = new Bean();
 
             if (beanData != null) {
@@ -80,5 +105,37 @@ public class OrderMapperService {
         }
 
         return null;
-    } 
+    }
+
+    private List<OrderContentEntry> buildOrderContentList(List<InventoryEntry> inventory, List<Bean> beans) {
+        List<OrderContentEntry> contentList = new ArrayList<>();
+
+        for (Bean bean : beans) {
+            BeanType type = bean.getType();
+            InventoryEntry beanData = findBeanDataByType(inventory, type);
+            OrderContentEntry contentEntry = new OrderContentEntry();
+
+            if (beanData != null) {
+                contentEntry.setBeanType(type.getName());
+                contentEntry.setQuantity(bean.getUnits().toString());
+
+                contentList.add(contentEntry);
+            }
+        }
+
+        return contentList;
+    }
+
+    private OrderEntry buildOrderEntry(OrderData orderData, List<OrderContentEntry> orderContent) {
+        OrderEntry orderEntry = new OrderEntry();
+
+        for (OrderContentEntry content : orderContent) {
+            content.setOrderEntry(orderEntry);
+            orderEntry.addBean(content);
+        }
+
+        orderEntry.setOrderedBy("Test");
+
+        return orderEntry;
+    }
 }
