@@ -8,12 +8,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "ORDER_CONTENT")
 public class OrderContentEntry {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @Column(name = "ID")
     private String id;
 
     @Column(name = "BEAN_TYPE")

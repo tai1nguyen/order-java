@@ -42,7 +42,8 @@ public class OrderMapperService {
 
     /**
      * Takes order data from the client and prepares it
-     * for insertion into the database.
+     * for insertion into the database by converting it into
+     * an object that can be consumed by the JPA layer.
      * @param orderData
      * @param inventoryEntries
      * @return OrderEntry
