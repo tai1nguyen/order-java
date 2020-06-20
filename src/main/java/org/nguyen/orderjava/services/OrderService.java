@@ -46,6 +46,6 @@ public class OrderService {
         List<InventoryEntry> beanData = inventoryRepoService.findAllEntries();
         OrderEntry orderEntry = orderMapperService.mapOrderDataToOrderEntry(orderData, beanData);
 
-        return orderRepoService.saveOrder(orderEntry);
+        return orderRepoService.saveOrder(orderEntry).getId();
     }
 }

@@ -1,8 +1,6 @@
 package org.nguyen.orderjava.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
@@ -44,11 +42,7 @@ public class InventoryRepoServiceTest {
 
         InventoryEntry result = inventoryRepoService.findEntryByType(BeanType.ARABICA);
 
-        assertNotNull(result);
-        assertEquals(entry.getBeanType(), BeanType.ARABICA);
-        assertEquals(entry.getPricePerUnit(), "0");
-        assertEquals(entry.getWeightPerUnit(), "0");
-        assertEquals(entry.getQuantity(), "0");
+        assertEquals(entry, result);
     }
 
     @Test
@@ -70,7 +64,6 @@ public class InventoryRepoServiceTest {
 
         List<InventoryEntry> entryList = inventoryRepoService.findAllEntries();
 
-        assertFalse(entryList.isEmpty());
         assertEquals(entryList.size(), 3);
     }
 

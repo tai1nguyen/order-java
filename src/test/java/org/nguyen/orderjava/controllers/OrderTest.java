@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.models.jpa.OrderEntry;
@@ -25,9 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
