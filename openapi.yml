@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Order Java App
+  description: This is a sample server for a java shop.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/
+    description: There are currently no live servers.
+tags:
+  - name: order
+    description: Methods for getting, creating, deleting and updating an order.
+  - name: inventory
+    description: Methods for retrieving inventory information.
+paths:
+  /order:
+    get:
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+      summary: Returns an order with the matching ID.
+      tags:
+        - order
+      responses:
+        '200':    # status code
+          description: A JSON object containing the order.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderData'
+    post:
+      summary: Creates an order.
+      tags:
+        - order
+      requestBody:
+        description: Information about the order.
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/OrderData'
+      responses:
+        '200':    # status code
+          description: A JSON object containing the order ID.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: string
+  /inventory/bean:
+    get:
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+          required: true
+      summary: Return inventory information for the requested bean type.
+      tags:
+        - inventory
+      responses:
+        '200':
+          description: A jJSON object containing information about the bean type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryData'
+  /inventory/beans:
+    get:
+      summary: Return inventory information for all beans.
+      tags:
+        - inventory
+      responses:
+        '200':
+          description: A jJSON object containing information about the bean type.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryData'
+components:
+  schemas:
+    OrderData:
+      type: object
+      properties:
+        price:
+          type: number
+        orderDate:
+          type: string
+        deliveryDate:
+          type: string
+        isComplete:
+          type: boolean
+        orderedBy:
+          type: string
+        id:
+          type: string
+        beans:
+          type: array
+          items: 
+            $ref: '#/components/schemas/OrderBean'
+    OrderBean:
+      type: object
+      properties:
+        weightPerUnit:
+          type: number
+        pricePerUnit:
+          type: number
+        units:
+          type: number
+        type:
+          type: string
+          enum: [ ARABICA, ROBUSTA, LIBERIAN, EXCELSA ]
+    InventoryData:
+      type: object
+      properties:
+        weightPerUnit:
+          type: string
+        pricePerUnit:
+          type: string
+        quantity:
+          type: number
+        beanType:
+          type: string
+          enum: [ ARABICA, ROBUSTA, LIBERIAN, EXCELSA ]
