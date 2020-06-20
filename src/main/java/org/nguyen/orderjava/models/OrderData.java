@@ -10,7 +10,7 @@ public class OrderData {
     private List<Bean> beans;
     private BigDecimal price = new BigDecimal(0);
     private Date orderDate;
-    private Date deliverDate;
+    private Date deliveryDate;
     private boolean isComplete;
     private String orderedBy;
     private String id;
@@ -39,12 +39,12 @@ public class OrderData {
         this.orderDate = orderDate;
     }
 
-    public Date getDeliverDate() {
-        return deliverDate;
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public void setDeliverDate(Date deliverDate) {
-        this.deliverDate = deliverDate;
+    public void setDeliveryDate(Date deliverDate) {
+        this.deliveryDate = deliverDate;
     }
 
     public boolean isComplete() {
@@ -85,10 +85,12 @@ public class OrderData {
 
     private boolean isEveryPropertyEqual(OrderData suspect) {
         return isEqual(this.id, suspect.getId()) &&
-            isEqual(this.deliverDate, suspect.getDeliverDate()) &&
+            isEqual(this.deliveryDate, suspect.getDeliveryDate()) &&
+            isEqual(this.orderedBy, suspect.getOrderedBy()) &&
             isEqual(this.orderDate, suspect.getOrderDate()) &&
             isEqual(this.isComplete, suspect.isComplete()) &&
             isEqual(this.price, suspect.getPrice());
+            
     }
 
     private boolean isContentEqual(List<Bean> suspectContent) {
@@ -110,7 +112,7 @@ public class OrderData {
 
     private Bean findMatchingBean(BeanType type, List<Bean> suspectContent) {
         for (Bean bean : suspectContent) {
-            if (bean.getType().equals(type)) {
+            if (type.equals(bean.getType())) {
                 return bean;
             }
         }

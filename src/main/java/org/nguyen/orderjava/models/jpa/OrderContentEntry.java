@@ -65,4 +65,30 @@ public class OrderContentEntry {
     public void removeOrderEntry() {
         this.orderEntry = null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof OrderContentEntry) {
+            OrderContentEntry suspect = (OrderContentEntry) o;
+            return isEveryPropertyEqual(suspect);
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean isEveryPropertyEqual(OrderContentEntry suspect) {
+        return isEqual(this.id, suspect.getId()) &&
+            isEqual(this.beanType, suspect.getBeanType()) &&
+            isEqual(this.quantity, suspect.getQuantity());
+    }
+
+    private boolean isEqual(Object expected, Object suspect) {
+        if (expected != null) {
+            return expected.equals(suspect);
+        }
+        else {
+            return expected == suspect;
+        }
+    }
 }

@@ -8,13 +8,16 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.nguyen.orderjava.models.Bean.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
+import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.nguyen.orderjava.services.InventoryRepoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -25,13 +28,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class InventoryTest {
 
     @LocalServerPort
-    private int port;
+    private int portNumber;
 
     @InjectMocks
     Inventory controller;
 
-    @MockBean
+    @Autowired
     InventoryRepoService repoService;
+
+    @MockBean
+    InventoryRepository inventoryRepo;
 
     @Test
     void getInventoryDataForBeanType_ShouldReturnDataForBeanType_GivenBeanTypeExistsInDatabase() {
@@ -42,10 +48,10 @@ public class InventoryTest {
         mock.setWeightPerUnit("1");
         mock.setQuantity("1");
 
-        when(repoService.findEntryByType(any())).thenReturn(mock);
+        when(inventoryRepo.findById(any())).thenReturn(Optional.of(mock));
 
         given()
-            .port(port)
+            .port(portNumber)
             .queryParam("type", "arabica")
         .when()
             .get("/inventory/bean")
@@ -71,10 +77,10 @@ public class InventoryTest {
 
         list.add(mock);
 
-        when(repoService.findAllEntries()).thenReturn(list);
+        when(inventoryRepo.findAll()).thenReturn(list);
 
         List<InventoryEntry> result = given()
-            .port(port)
+            .port(portNumber)
         .when()
             .get("/inventory/beans")
         .then()

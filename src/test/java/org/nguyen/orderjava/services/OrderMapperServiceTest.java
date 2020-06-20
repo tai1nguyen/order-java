@@ -25,30 +25,52 @@ public class OrderMapperServiceTest {
 
     @Test
     void mapOrderEntryToOrderData_ShouldReturnOrderData_GivenOrderEntryAndBeanData() {
-        List<Bean> expectedBeans = new ArrayList<>();
-        OrderData expectedOrder = new OrderData();
-        Bean expectedBean = new Bean();
-
-        expectedBean.setPricePerUnit(new BigDecimal("1.05"));
-        expectedBean.setWeightPerUnit(new BigDecimal("0.05"));
-        expectedBean.setUnits(1);
-        expectedBean.setType(BeanType.ARABICA);
-
-        expectedBeans.add(expectedBean);
-
-        expectedOrder.setId("1");
-        expectedOrder.setPrice(new BigDecimal("1.05"));
-        expectedOrder.setBeans(expectedBeans);
-
-        OrderData result = orderMapperService.mapOrderEntryToOrderData("1", mockOrderEntry(), mockBeans());
+        OrderData expectedOrder = mockOrderData();
+        OrderData result = orderMapperService.mapOrderEntryToOrderData("1", mockOrderEntry("1"), mockBeans());
 
         assertEquals(expectedOrder, result);
     }
 
-    private OrderEntry mockOrderEntry() {
-        OrderEntry mock = new OrderEntry();
+    @Test
+    void mapOrderDataToOrderEntry_ShouldReturnOrderEntry_GivenOrderDataAndBeanData() {
+        OrderEntry expectedOrderEntry = mockOrderEntry(null);
+        OrderEntry result = orderMapperService.mapOrderDataToOrderEntry(mockOrderData(), mockBeans());
+
+        assertEquals(expectedOrderEntry, result);
+    }
+
+    private Bean mockBean() {
+        Bean mock = new Bean();
+
+        mock.setPricePerUnit(new BigDecimal("1.05"));
+        mock.setWeightPerUnit(new BigDecimal("0.05"));
+        mock.setUnits(1);
+        mock.setType(BeanType.ARABICA);
+
+        return mock;
+    }
+
+    private OrderData mockOrderData() {
+        OrderData mock = new OrderData();
+        List<Bean> mockBeans = new ArrayList<>();
+
+        mockBeans.add(mockBean());
 
         mock.setId("1");
+        mock.setPrice(new BigDecimal("1.05"));
+        mock.setBeans(mockBeans);
+        mock.setOrderedBy("foo");
+
+        return mock;
+    }
+
+    private OrderEntry mockOrderEntry(String id) {
+        OrderEntry mock = new OrderEntry();
+
+        if (id != null) {
+            mock.setId(id);
+        }
+
         mock.setOrderedBy("foo");
         mock.addBean(mockOrderContentEntry());
 

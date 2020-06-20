@@ -1,5 +1,8 @@
 package org.nguyen.orderjava.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.services.OrderService;
@@ -28,7 +31,12 @@ public class Order {
     }
 
     @PostMapping
-    public String createOrder(@RequestBody OrderData data) {
-        return orderService.saveOrder(data);
+    public Map<String, String> createOrder(@RequestBody OrderData data) {
+        Map<String, String> response = new HashMap<>();
+        String orderId = orderService.saveOrder(data);
+
+        response.put("id", orderId);
+
+        return response;
     }
 }

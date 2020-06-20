@@ -135,7 +135,7 @@ public class OrderMapperService {
             orderEntry.addBean(content);
         }
 
-        orderEntry.setOrderedBy("Test");
+        orderEntry.setOrderedBy(orderData.getOrderedBy());
 
         return orderEntry;
     }
