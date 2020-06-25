@@ -64,7 +64,7 @@ paths:
         - inventory
       responses:
         '200':
-          description: A jJSON object containing information about the bean type.
+          description: A JSON object containing information about the bean type.
           content:
             application/json:
               schema:
@@ -76,7 +76,7 @@ paths:
         - inventory
       responses:
         '200':
-          description: A jJSON object containing information about the bean type.
+          description: A JSON object containing information about the bean type.
           content:
             application/json:
               schema:
@@ -103,17 +103,13 @@ components:
         beans:
           type: array
           items: 
-            $ref: '#/components/schemas/OrderBean'
-    OrderBean:
+            $ref: '#/components/schemas/OrderContent'
+    OrderContent:
       type: object
       properties:
-        weightPerUnit:
+        quantity:
           type: number
-        pricePerUnit:
-          type: number
-        units:
-          type: number
-        type:
+        beanType:
           type: string
           enum: [ ARABICA, ROBUSTA, LIBERIAN, EXCELSA ]
     InventoryData:

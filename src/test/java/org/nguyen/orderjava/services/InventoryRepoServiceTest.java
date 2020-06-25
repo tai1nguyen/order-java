@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

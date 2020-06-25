@@ -27,13 +27,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OrderTest {
+public class OrderControllerTest {
 
     @LocalServerPort
     private int portNumber;
 
     @InjectMocks
-    Order controller;
+    OrderController controller;
 
     @MockBean
     OrderRepository orderRepo;

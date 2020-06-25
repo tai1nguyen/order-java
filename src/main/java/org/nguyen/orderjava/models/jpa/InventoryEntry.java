@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
 
 @Entity
 @Table(name = "INVENTORY")

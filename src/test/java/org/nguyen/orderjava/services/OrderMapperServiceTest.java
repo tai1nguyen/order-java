@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.nguyen.orderjava.models.Bean;
+import org.nguyen.orderjava.models.BeanType;
+import org.nguyen.orderjava.models.OrderContentData;
 import org.nguyen.orderjava.models.OrderData;
-import org.nguyen.orderjava.models.Bean.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.models.jpa.OrderContentEntry;
 import org.nguyen.orderjava.models.jpa.OrderEntry;
@@ -39,20 +39,18 @@ public class OrderMapperServiceTest {
         assertEquals(expectedOrderEntry, result);
     }
 
-    private Bean mockBean() {
-        Bean mock = new Bean();
+    private OrderContentData mockBean() {
+        OrderContentData mock = new OrderContentData();
 
-        mock.setPricePerUnit(new BigDecimal("1.05"));
-        mock.setWeightPerUnit(new BigDecimal("0.05"));
-        mock.setUnits(1);
-        mock.setType(BeanType.ARABICA);
+        mock.setQuantity(1);
+        mock.setBeanType(BeanType.ARABICA);
 
         return mock;
     }
 
     private OrderData mockOrderData() {
         OrderData mock = new OrderData();
-        List<Bean> mockBeans = new ArrayList<>();
+        List<OrderContentData> mockBeans = new ArrayList<>();
 
         mockBeans.add(mockBean());
 

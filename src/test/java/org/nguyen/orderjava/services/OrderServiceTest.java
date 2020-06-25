@@ -1,5 +1,6 @@
 package org.nguyen.orderjava.services;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,7 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
+import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.models.jpa.OrderEntry;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -87,6 +89,19 @@ public class OrderServiceTest {
 
         assertNotNull(error);
         assertTrue(error instanceof OrderNotFoundException);
+    }
+
+    @Test
+    void saveOrder_ShouldReturnAnId_GivenSaveOperationSucceeded() {
+        OrderEntry mock = mockOrderEntry();
+
+        when(orderRepoService.saveOrder(any())).thenReturn(mock);
+        when(inventoryRepoService.findAllEntries()).thenReturn(mockInventoryList());
+        when(orderMapperService.mapOrderDataToOrderEntry(any(), any())).thenReturn(mock);
+
+        String result = orderService.saveOrder(new OrderData());
+
+        assertEquals("test", result);
     }
 
     private OrderEntry mockOrderEntry() {

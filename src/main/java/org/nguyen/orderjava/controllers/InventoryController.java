@@ -2,7 +2,7 @@ package org.nguyen.orderjava.controllers;
 
 import java.util.List;
 
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.services.InventoryRepoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/inventory")
-public class Inventory {
+public class InventoryController {
 
     private final InventoryRepoService inventoryRepoService;
 
-    Inventory(InventoryRepoService inventoryRepoService) {
+    InventoryController(InventoryRepoService inventoryRepoService) {
         this.inventoryRepoService = inventoryRepoService;
     }
 

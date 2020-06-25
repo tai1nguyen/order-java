@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.nguyen.orderjava.models.Bean.BeanType;
-
 public class OrderData {
-    private List<Bean> beans;
+    private List<OrderContentData> beans;
     private BigDecimal price = new BigDecimal(0);
     private Date orderDate;
     private Date deliveryDate;
@@ -15,11 +13,11 @@ public class OrderData {
     private String orderedBy;
     private String id;
 
-    public List<Bean> getBeans() {
+    public List<OrderContentData> getBeans() {
         return beans;
     }
 
-    public void setBeans(List<Bean> beans) {
+    public void setBeans(List<OrderContentData> beans) {
         this.beans = beans;
     }
 
@@ -93,11 +91,11 @@ public class OrderData {
             
     }
 
-    private boolean isContentEqual(List<Bean> suspectContent) {
+    private boolean isContentEqual(List<OrderContentData> suspectContent) {
         boolean isEqual = true;
 
-        for (Bean bean : this.beans) {
-            Bean match = findMatchingBean(bean.getType(), suspectContent);
+        for (OrderContentData bean : this.beans) {
+            OrderContentData match = findMatchingOrderContent(bean.getBeanType(), suspectContent);
 
             if (match == null || !bean.equals(match)) {
                 // The suspect does not have a matching
@@ -110,9 +108,9 @@ public class OrderData {
         return isEqual;
     }
 
-    private Bean findMatchingBean(BeanType type, List<Bean> suspectContent) {
-        for (Bean bean : suspectContent) {
-            if (type.equals(bean.getType())) {
+    private OrderContentData findMatchingOrderContent(BeanType type, List<OrderContentData> suspectContent) {
+        for (OrderContentData bean : suspectContent) {
+            if (type.equals(bean.getBeanType())) {
                 return bean;
             }
         }

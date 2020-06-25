@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

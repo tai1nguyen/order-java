@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nguyen.orderjava.models.Bean;
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
+import org.nguyen.orderjava.models.OrderContentData;
 import org.nguyen.orderjava.models.OrderData;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.models.jpa.OrderContentEntry;
@@ -26,14 +26,14 @@ public class OrderMapperService {
      * @return OrderData
      */
     public OrderData mapOrderEntryToOrderData(String id, OrderEntry orderEntry, List<InventoryEntry> inventoryEntries) {
-        List<OrderContentEntry> contentEntry = orderEntry.getBeans();
-        List<Bean> beans = buildBeanList(inventoryEntries, contentEntry);
-        BigDecimal price = getTotalPrice(beans);
+        List<OrderContentEntry> orderContentEntry = orderEntry.getBeans();
+        List<OrderContentData> orderContentData = buildOrderContents(inventoryEntries, orderContentEntry);
+        BigDecimal price = getTotalPrice(orderContentData, inventoryEntries);
 
         OrderData orderData = new OrderData();
 
         orderData.setOrderedBy(orderEntry.getOrderedBy());
-        orderData.setBeans(beans);
+        orderData.setBeans(orderContentData);
         orderData.setPrice(price);
         orderData.setId(id);
 
@@ -49,42 +49,43 @@ public class OrderMapperService {
      * @return OrderEntry
      */
     public OrderEntry mapOrderDataToOrderEntry(OrderData orderData, List<InventoryEntry> inventoryEntries) {
-        List<Bean> beans = orderData.getBeans();
+        List<OrderContentData> beans = orderData.getBeans();
 
         // The IDs of the order content entry and the order entry will be set by the JPA layer.
-        List<OrderContentEntry> contentEntryList = buildOrderContentList(inventoryEntries, beans);
+        List<OrderContentEntry> contentEntryList = buildOrderContentEntries(inventoryEntries, beans);
         OrderEntry orderEntry = buildOrderEntry(orderData, contentEntryList);
         
         return orderEntry;
     }
 
-    private List<Bean> buildBeanList(List<InventoryEntry> inventory, List<OrderContentEntry> contentEntries) {
-        List<Bean> beans = new ArrayList<>();
+    private List<OrderContentData> buildOrderContents(List<InventoryEntry> inventory, List<OrderContentEntry> contentEntries) {
+        List<OrderContentData> orderContents = new ArrayList<>();
         
         for (OrderContentEntry content : contentEntries) {
             BeanType type = BeanType.getType(content.getBeanType());
             InventoryEntry beanData = findBeanDataByType(inventory, type);
-            Bean bean = new Bean();
+            OrderContentData bean = new OrderContentData();
 
             if (beanData != null) {
-                bean.setType(type);
-                bean.setPricePerUnit(new BigDecimal(beanData.getPricePerUnit()));
-                bean.setWeightPerUnit(new BigDecimal(beanData.getWeightPerUnit()));
-                bean.setUnits(Integer.valueOf(content.getQuantity()));
+                bean.setBeanType(type);
+                // bean.setPricePerUnit(new BigDecimal(beanData.getPricePerUnit()));
+                // bean.setWeightPerUnit(new BigDecimal(beanData.getWeightPerUnit()));
+                bean.setQuantity(Integer.valueOf(content.getQuantity()));
             }
 
-            beans.add(bean);
+            orderContents.add(bean);
         }
 
-        return beans;
+        return orderContents;
     }
 
-    private BigDecimal getTotalPrice(List<Bean> beans) {
+    private BigDecimal getTotalPrice(List<OrderContentData> orderContent, List<InventoryEntry> inventory) {
         BigDecimal totalPrice = null;
 
-        for (Bean bean : beans) {
-            BigDecimal units = new BigDecimal(bean.getUnits());
-            BigDecimal pricePerUnit = bean.getPricePerUnit();
+        for (OrderContentData bean : orderContent) {
+            InventoryEntry beanData = findBeanDataByType(inventory, bean.getBeanType());
+            BigDecimal units = new BigDecimal(bean.getQuantity());
+            BigDecimal pricePerUnit = new BigDecimal(beanData.getPricePerUnit());
             BigDecimal result = pricePerUnit.multiply(units);
 
             if (totalPrice == null) {
@@ -108,17 +109,17 @@ public class OrderMapperService {
         return null;
     }
 
-    private List<OrderContentEntry> buildOrderContentList(List<InventoryEntry> inventory, List<Bean> beans) {
+    private List<OrderContentEntry> buildOrderContentEntries(List<InventoryEntry> inventory, List<OrderContentData> beans) {
         List<OrderContentEntry> contentList = new ArrayList<>();
 
-        for (Bean bean : beans) {
-            BeanType type = bean.getType();
+        for (OrderContentData bean : beans) {
+            BeanType type = bean.getBeanType();
             InventoryEntry beanData = findBeanDataByType(inventory, type);
             OrderContentEntry contentEntry = new OrderContentEntry();
 
             if (beanData != null) {
                 contentEntry.setBeanType(type.getName());
-                contentEntry.setQuantity(bean.getUnits().toString());
+                contentEntry.setQuantity(bean.getQuantity().toString());
 
                 contentList.add(contentEntry);
             }

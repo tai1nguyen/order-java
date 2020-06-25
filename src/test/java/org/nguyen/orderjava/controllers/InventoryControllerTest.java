@@ -13,7 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.nguyen.orderjava.models.Bean.BeanType;
+import org.nguyen.orderjava.models.BeanType;
 import org.nguyen.orderjava.models.jpa.InventoryEntry;
 import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.nguyen.orderjava.services.InventoryRepoService;
@@ -25,13 +25,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class InventoryTest {
+public class InventoryControllerTest {
 
     @LocalServerPort
     private int portNumber;
 
     @InjectMocks
-    Inventory controller;
+    InventoryController controller;
 
     @Autowired
     InventoryRepoService repoService;
