@@ -4,7 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 
 public class OrderContentDto {
+
     private BeanTypeEnum beanType;
+
     private Integer quantity;
 
     public BeanTypeEnum getBeanType() {
