@@ -7,10 +7,24 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class OrderUpdateDto {
+
+    private String id;
+
     private List<OrderContentDto> beanAdditions;
+
     private List<OrderContentDto> beanDeletions;
+
     private List<OrderContentDto> beanUpdates;
+
     private Date changeDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<OrderContentDto> getBeanAdditions() {
         return beanAdditions;

@@ -58,7 +58,7 @@ public class OrderControllerTest {
             .port(portNumber)
             .queryParam("id", "test")
         .when()
-            .get("/order")
+            .get("/order-java/v1/order")
         .then()
             .assertThat()
             .statusCode(200)
@@ -74,7 +74,7 @@ public class OrderControllerTest {
             .port(portNumber)
             .queryParam("id", "test")
         .when()
-            .get("/order")
+            .get("/order-java/v1/order")
         .then()
             .assertThat()
             .statusCode(500)
@@ -97,7 +97,7 @@ public class OrderControllerTest {
             .request().body(mock)
             .contentType("application/json")
         .when()
-            .post("/order")
+            .post("/order-java/v1/order")
         .then()
             .assertThat()
             .statusCode(200)
@@ -123,7 +123,34 @@ public class OrderControllerTest {
             .request().body(mock)
             .contentType("application/json")
         .when()
-            .patch("/order/test")
+            .patch("/order-java/v1/order/test")
+        .then()
+            .assertThat()
+            .statusCode(200)
+            .body("id", equalTo("test"))
+            .contentType("application/json");
+    }
+
+    @Test
+    void updateOrder_ShouldUpdateAnExistingOrderAndThenSaveTheChange_GivenNoIdInPathAndAnExistingOrderExists() {
+        OrderUpdateDto mock = new OrderUpdateDto();
+        OrderEntryJpa mockOrderEntry = new OrderEntryJpa();
+
+        mock.setBeanAdditions(new ArrayList<>());
+        mock.setBeanDeletions(new ArrayList<>());
+        mock.setBeanUpdates(new ArrayList<>());
+        mock.setId("test");
+        mockOrderEntry.setId("test");
+
+        when(orderRepo.save(any())).thenReturn(mockOrderEntry);
+        when(orderRepo.findById("test")).thenReturn(Optional.of(mockOrderEntry));
+
+        given()
+            .port(portNumber)
+            .request().body(mock)
+            .contentType("application/json")
+        .when()
+            .put("/order-java/v1/order")
         .then()
             .assertThat()
             .statusCode(200)
@@ -134,6 +161,7 @@ public class OrderControllerTest {
     @Test
     void updateOrder_ShouldReturnNotFoundException_GivenAnExistingOrderEntryIsNotFound() {
         OrderUpdateDto mock = new OrderUpdateDto();
+
         when(orderRepo.findById("test")).thenReturn(Optional.ofNullable(null));
 
         given()
@@ -141,13 +169,35 @@ public class OrderControllerTest {
             .request().body(mock)
             .contentType("application/json")
         .when()
-            .patch("/order/test")
+            .patch("/order-java/v1/order/test")
         .then()
             .assertThat()
             .statusCode(404)
             .body("error", equalTo("Not Found"))
             .body("message", equalTo("Order 'test' Not Found"))
-            .body("path", equalTo("/order/test"))
+            .body("path", equalTo("/order-java/v1/order/test"))
+            .contentType("application/json");
+    }
+
+    @Test
+    void updateOrder_ShouldReturnNotFoundException_GivenNoIdInPathAndAnExistingOrderEntryIsNotFound() {
+        OrderUpdateDto mock = new OrderUpdateDto();
+        mock.setId("test");
+
+        when(orderRepo.findById("test")).thenReturn(Optional.ofNullable(null));
+
+        given()
+            .port(portNumber)
+            .request().body(mock)
+            .contentType("application/json")
+        .when()
+            .put("/order-java/v1/order")
+        .then()
+            .assertThat()
+            .statusCode(404)
+            .body("error", equalTo("Not Found"))
+            .body("message", equalTo("Order 'test' Not Found"))
+            .body("path", equalTo("/order-java/v1/order"))
             .contentType("application/json");
     }
 
@@ -158,7 +208,7 @@ public class OrderControllerTest {
         given()
             .port(portNumber)
         .when()
-            .delete("/order/1")
+            .delete("/order-java/v1/order/1")
         .then()
             .assertThat()
             .statusCode(200);

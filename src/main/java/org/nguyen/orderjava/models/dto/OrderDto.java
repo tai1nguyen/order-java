@@ -7,12 +7,19 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class OrderDto {
+
     private List<OrderContentDto> beans;
+
     private BigDecimal price = new BigDecimal(0);
+
     private Date orderDate;
+
     private Date deliveryDate;
+
     private boolean isComplete;
+
     private String orderedBy;
+
     private String id;
 
     public List<OrderContentDto> getBeans() {

@@ -15,5 +15,7 @@ logging:
     org.springframework: INFO
     org.h2.jdbc: DEBUG
 server:
+  servlet:
+    context-path: /order-java
   error:
     include-message: always

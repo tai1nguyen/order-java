@@ -16,14 +16,17 @@ dependencies {
 	implementation (
         'org.springframework.boot:spring-boot-starter-web',
         'org.springframework.boot:spring-boot-starter-data-jpa',
-        'org.apache.commons:commons-lang3:3.11'
+        'org.apache.commons:commons-lang3:3.11',
+        'io.springfox:springfox-boot-starter:3.0.0'
+    )
+    testImplementation (
+        'com.h2database:h2',
+        'io.rest-assured:rest-assured:4.2.0',
+        'io.rest-assured:json-path:4.2.0',
+        'io.rest-assured:xml-path:4.2.0',
+	    'org.springframework.boot:spring-boot-starter-test'
     )
     runtimeOnly 'com.h2database:h2'
-    testImplementation 'com.h2database:h2'
-    testImplementation 'io.rest-assured:rest-assured:4.2.0'
-    testImplementation 'io.rest-assured:json-path:4.2.0'
-    testImplementation 'io.rest-assured:xml-path:4.2.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
