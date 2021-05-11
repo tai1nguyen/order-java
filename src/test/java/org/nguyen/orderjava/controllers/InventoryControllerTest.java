@@ -49,7 +49,7 @@ public class InventoryControllerTest {
 
         given()
             .port(portNumber)
-            .queryParam("type", BeanTypeEnum.ARABICA.getName())
+            .queryParam("beanType", BeanTypeEnum.ARABICA.getName())
         .when()
             .get("/order-java/v1/inventory/bean")
         .then()
