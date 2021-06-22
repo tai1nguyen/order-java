@@ -29,7 +29,7 @@ public class InventoryRepoServiceTest {
     void findEntryByType_ShouldReturnBeanData_GivenBeanDataExistsInRepo() {
         InventoryEntryJpa entry = new InventoryEntryJpa();
         Optional<InventoryEntryJpa> mock = null;
-        
+
         entry.setBeanType(BeanTypeEnum.ARABICA);
         entry.setPricePerUnit("0");
         entry.setWeightPerUnit("0");

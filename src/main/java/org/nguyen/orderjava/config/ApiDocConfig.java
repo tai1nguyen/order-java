@@ -27,7 +27,7 @@ public class ApiDocConfig {
 
     private ApiInfo info() {
         return new ApiInfoBuilder()
-            .title("Order-Java Application")
+            .title("Order Java Application")
             .description("API documentation for the Order Java Application")
             .version("0.1")
             .build();

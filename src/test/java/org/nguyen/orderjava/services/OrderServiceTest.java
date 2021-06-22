@@ -60,7 +60,8 @@ public class OrderServiceTest {
     }
 
     @Test
-    void getOrderById_ShouldCallMapperServiceWithBeanAndOrderData_GivenOrderId() throws OrderNotFoundException {
+    void getOrderById_ShouldCallMapperServiceWithBeanAndOrderData_GivenOrderId()
+            throws OrderNotFoundException {
         OrderEntryJpa mockOrderEntry = mockOrderEntry();
         List<InventoryEntryJpa> mockInventoryList = mockInventoryList();
 
@@ -69,7 +70,8 @@ public class OrderServiceTest {
 
         orderService.getOrderById("test");
 
-        verify(orderMapperService, times(1)).mapOrderEntryToOrderData("test", mockOrderEntry, mockInventoryList);
+        verify(orderMapperService, times(1))
+                .mapOrderEntryToOrderData("test", mockOrderEntry, mockInventoryList);
     }
 
     @Test
@@ -80,7 +82,8 @@ public class OrderServiceTest {
 
         try {
             orderService.getOrderById("test");
-        } catch (OrderNotFoundException ex) {
+        }
+        catch (OrderNotFoundException ex) {
             error = ex;
         }
 
@@ -105,7 +108,8 @@ public class OrderServiceTest {
     }
 
     @Test
-    void updateOrder_ShouldUpdateAnExistingOrderEntry_GivenOrderUpdateDataExists() throws OrderNotFoundException {
+    void updateOrder_ShouldUpdateAnExistingOrderEntry_GivenOrderUpdateDataExists()
+            throws OrderNotFoundException {
         OrderEntryJpa mock = mockOrderEntry();
         OrderUpdateDto mockUpdateData = new OrderUpdateDto();
 
@@ -141,7 +145,8 @@ public class OrderServiceTest {
 
         try {
             orderService.updateOrder("test", mockUpdateData);
-        } catch (OrderNotFoundException ex) {
+        }
+        catch (OrderNotFoundException ex) {
             error = ex;
         }
 
@@ -153,7 +158,8 @@ public class OrderServiceTest {
         OrderNotFoundException error = null;
 
         try {
-            doThrow(new EmptyResultDataAccessException(0)).when(orderRepoService).deleteOrderById("1");
+            doThrow(new EmptyResultDataAccessException(0)).when(orderRepoService)
+                    .deleteOrderById("1");
 
             orderService.deleteOrder("1");
         }

@@ -23,9 +23,9 @@ public class OrderService {
 
     @Autowired
     OrderService(
-        OrderRepoService orderRepoService,
-        InventoryRepoService inventoryRepoService,
-        OrderMapperService orderMapperService
+            OrderRepoService orderRepoService,
+            InventoryRepoService inventoryRepoService,
+            OrderMapperService orderMapperService
     ) {
         this.orderRepoService = orderRepoService;
         this.inventoryRepoService = inventoryRepoService;

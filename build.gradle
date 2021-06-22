@@ -26,9 +26,15 @@ dependencies {
         'io.rest-assured:xml-path:4.2.0',
 	    'org.springframework.boot:spring-boot-starter-test'
     )
-    runtimeOnly 'com.h2database:h2'
+    runtimeOnly(
+        'com.h2database:h2'
+    )
 }
 
 test {
 	useJUnitPlatform()
+}
+
+bootRun {
+    systemProperty "spring.output.ansi.enabled", "ALWAYS"
 }

@@ -33,7 +33,8 @@ public class OrderMapperServiceTest {
         expectedOrder.setBeans(expectedOrderBeans);
         mockOrderEntry.addBean(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
 
-        OrderDto result = orderMapperService.mapOrderEntryToOrderData("1", mockOrderEntry, mockBeans());
+        OrderDto result =
+                orderMapperService.mapOrderEntryToOrderData("1", mockOrderEntry, mockBeans());
 
         assertEquals(expectedOrder, result);
     }
@@ -74,7 +75,7 @@ public class OrderMapperServiceTest {
         List<OrderContentDto> additions = new ArrayList<>();
         List<OrderContentDto> deletions = new ArrayList<>();
         List<OrderContentDto> updates = new ArrayList<>();
-        
+
         additions.add(mockOrderContentData(BeanTypeEnum.LIBERIAN, "3"));
         deletions.add(mockOrderContentData(BeanTypeEnum.ARABICA, null));
         updates.add(mockOrderContentData(BeanTypeEnum.EXCELSA, "4"));
@@ -90,11 +91,11 @@ public class OrderMapperServiceTest {
         OrderContentDto mock = new OrderContentDto();
 
         mock.setBeanType(type);
-        
+
         if (quantity != null) {
             mock.setQuantity(Integer.parseInt(quantity));
         }
-        
+
         return mock;
     }
 
