@@ -1,6 +1,10 @@
 # Description
+* Issue #XXXX
+
+[Enter description here...]
 
 # Did you remember to...
-- [ ] add tests for all new code introduced?
-- [ ] add an informative pull request title?
-- [ ] link to a corresponding issue?
+- [ ] Add an informative pull request title?
+- [ ] Format all new code using the formatter file?
+- [ ] Add tests for all new code introduced?
+- [ ] Link to a corresponding issue?
