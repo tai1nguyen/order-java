@@ -1,10 +1,10 @@
 package org.nguyen.orderjava.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,35 +12,40 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 import org.nguyen.orderjava.models.dto.OrderDto;
 import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-@SpringBootTest
 public class OrderServiceTest {
 
-    @InjectMocks
     private OrderService orderService;
 
-    @Mock
     private OrderRepoService orderRepoService;
 
-    @Mock
     private InventoryRepoService inventoryRepoService;
 
-    @Mock
     private OrderMapperService orderMapperService;
 
+    @BeforeEach
+    public void setUp() {
+        this.orderRepoService = mock(OrderRepoService.class);
+        this.inventoryRepoService = mock(InventoryRepoService.class);
+        this.orderMapperService = mock(OrderMapperService.class);
+        this.orderService = new OrderService(
+                this.orderRepoService,
+                this.inventoryRepoService,
+                this.orderMapperService
+        );
+    }
+
     @Test
-    void getOrderById_ShouldCallOrderRepoForData_GivenOrderId() throws OrderNotFoundException {
+    public void Given_OrderIdAndOrderExists_When_ARequestIsMadeForOrderById_Then_OrderDataShouldBeFetched() {
         when(orderRepoService.findOrderById("test")).thenReturn(mockOrderEntry());
         when(inventoryRepoService.findAllEntries()).thenReturn(mockInventoryList());
 
@@ -50,7 +55,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void getOrderById_ShouldCallInventoryRepoForData_GivenOrderId() throws OrderNotFoundException {
+    public void Given_OrderIdAndOrderExists_When_ARequestIsMadeForOrderById_Then_BeanDataShouldBeFetched() {
         when(orderRepoService.findOrderById("test")).thenReturn(mockOrderEntry());
         when(inventoryRepoService.findAllEntries()).thenReturn(mockInventoryList());
 
@@ -60,11 +65,9 @@ public class OrderServiceTest {
     }
 
     @Test
-    void getOrderById_ShouldCallMapperServiceWithBeanAndOrderData_GivenOrderId()
-            throws OrderNotFoundException {
+    public void Given_OrderIdAndOrderExists_When_ARequestIsMadeForOrderById_Then_OrderDataAndBeanDataShouldBeMappedToOrderJpa() {
         OrderEntryJpa mockOrderEntry = mockOrderEntry();
         List<InventoryEntryJpa> mockInventoryList = mockInventoryList();
-
         when(orderRepoService.findOrderById("test")).thenReturn(mockOrderEntry);
         when(inventoryRepoService.findAllEntries()).thenReturn(mockInventoryList);
 
@@ -75,44 +78,31 @@ public class OrderServiceTest {
     }
 
     @Test
-    void getOrderById_ShouldThrowException_GivenNoOrderWasFound() throws OrderNotFoundException {
-        Exception error = null;
-
+    public void Given_OrderIdAndOrderDoesNotExist_When_ARequestIsMadeForOrderById_Then_ExceptionShouldBeThrown() {
         when(orderRepoService.findOrderById("test")).thenReturn(null);
 
-        try {
+        assertThrows(OrderNotFoundException.class, () -> {
             orderService.getOrderById("test");
-        }
-        catch (OrderNotFoundException ex) {
-            error = ex;
-        }
+        });
 
         verify(orderMapperService, times(0)).mapOrderEntryToOrderData(any(), any(), any());
         verify(inventoryRepoService, times(0)).findAllEntries();
-
-        assertNotNull(error);
-        assertTrue(error instanceof OrderNotFoundException);
     }
 
     @Test
-    void saveOrder_ShouldReturnAnId_GivenSaveOperationSucceeded() {
+    public void Given_OrderDtoAndSaveOperationWillSucceed_When_ARequestIsMadeToSaveOrderById_Then_OrderIdWillBeReturned() {
         OrderEntryJpa mock = mockOrderEntry();
-
         when(orderRepoService.saveOrder(any())).thenReturn(mock);
         when(inventoryRepoService.findAllEntries()).thenReturn(mockInventoryList());
         when(orderMapperService.mapOrderDataToOrderEntry(any())).thenReturn(mock);
 
-        String result = orderService.saveOrder(new OrderDto());
-
-        assertEquals("test", result);
+        assertEquals("test", orderService.saveOrder(new OrderDto()));
     }
 
     @Test
-    void updateOrder_ShouldUpdateAnExistingOrderEntry_GivenOrderUpdateDataExists()
-            throws OrderNotFoundException {
+    public void Given_OrderUpdateDtoAndOrderIdAndOrderExists_When_ARequestIsMadeToUpdateOrder_Then_MapperServiceShouldBeCalledToUpdateTheOrder() {
         OrderEntryJpa mock = mockOrderEntry();
         OrderUpdateDto mockUpdateData = new OrderUpdateDto();
-
         when(orderRepoService.findOrderById("test")).thenReturn(mock);
         when(orderMapperService.updateOrderEntry(any(), any())).thenReturn(mock);
         when(orderRepoService.saveOrder(any())).thenReturn(mock);
@@ -123,7 +113,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void updateOrder_ShouldReturnAnId_GivenSaveOperationSucceeded() throws OrderNotFoundException {
+    public void Given_OrderUpdateDtoAndOrderIdAndOrderExistsAndUpdateSucceeds_When_ARequestIsMadeToUpdateOrder_Then_OrderIdShouldBeReturned() {
         OrderEntryJpa mock = mockOrderEntry();
         OrderUpdateDto mockUpdateData = new OrderUpdateDto();
 
@@ -131,43 +121,28 @@ public class OrderServiceTest {
         when(orderMapperService.updateOrderEntry(any(), any())).thenReturn(mock);
         when(orderRepoService.saveOrder(any())).thenReturn(mock);
 
-        String result = orderService.updateOrder("test", mockUpdateData);
-
-        assertEquals("test", result);
+        assertEquals("test", orderService.updateOrder("test", mockUpdateData));
     }
 
     @Test
-    void updateOrder_ShouldThrowAnException_GivenNoOrderEntryExists() {
-        OrderNotFoundException error = null;
+    public void Given_OrderDoesNotExist_When_ARequestIsMadeToUpdateOrder_Then_ExceptionShouldBeThrown() {
         OrderUpdateDto mockUpdateData = new OrderUpdateDto();
-
         when(orderRepoService.findOrderById("test")).thenReturn(null);
 
-        try {
+        OrderNotFoundException error = assertThrows(OrderNotFoundException.class, () -> {
             orderService.updateOrder("test", mockUpdateData);
-        }
-        catch (OrderNotFoundException ex) {
-            error = ex;
-        }
+        });
 
         assertEquals(new OrderNotFoundException("test").getMessage(), error.getMessage());
     }
 
     @Test
-    void deleteOrder_ShouldThrowAnException_GivenNoOrderEntryExistsForTheId() {
-        OrderNotFoundException error = null;
+    public void Given_OrderDoesNotExist_When_ARequestIsMadeToDeleteOrder_Then_ExceptionShouldBeThrown() {
+        doThrow(new EmptyResultDataAccessException(0)).when(orderRepoService).deleteOrderById("1");
 
-        try {
-            doThrow(new EmptyResultDataAccessException(0)).when(orderRepoService)
-                    .deleteOrderById("1");
-
+        assertThrows(OrderNotFoundException.class, () -> {
             orderService.deleteOrder("1");
-        }
-        catch (OrderNotFoundException ex) {
-            error = ex;
-        }
-
-        assertNotNull(error);
+        });
     }
 
     private OrderEntryJpa mockOrderEntry() {

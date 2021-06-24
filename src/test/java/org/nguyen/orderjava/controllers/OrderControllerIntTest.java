@@ -11,16 +11,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.dto.OrderDto;
 import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
 import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.nguyen.orderjava.repositories.OrderRepository;
-import org.nguyen.orderjava.services.OrderMapperService;
-import org.nguyen.orderjava.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -31,25 +27,15 @@ public class OrderControllerIntTest {
     @LocalServerPort
     private int portNumber;
 
-    @InjectMocks
-    OrderController controller;
-
     @MockBean
     OrderRepository orderRepo;
 
     @MockBean
     InventoryRepository inventoryRepo;
 
-    @Autowired
-    OrderMapperService orderMapper;
-
-    @Autowired
-    OrderService orderService;
-
     @Test
     void getOrderById_ShouldReturnOrderData_GivenOrderExists() throws OrderNotFoundException {
         OrderEntryJpa mock = new OrderEntryJpa();
-
         mock.setId("test");
         
         when(orderRepo.findById(any())).thenReturn(Optional.of(mock));
@@ -85,11 +71,9 @@ public class OrderControllerIntTest {
     void createOrder_ShouldInsertAnOrderEntryIntoTheDatabase_GivenOrderDataIsProvided() {
         OrderDto mock = new OrderDto();
         OrderEntryJpa mockResponse = new OrderEntryJpa();
-
         mock.setPrice(new BigDecimal(100));
         mock.setBeans(new ArrayList<>());
         mockResponse.setId("test");
-
         when(orderRepo.save(any())).thenReturn(mockResponse);
 
         given()
@@ -109,12 +93,10 @@ public class OrderControllerIntTest {
     void updateOrder_ShouldUpdateAnExistingOrderAndThenSaveTheChange_GivenAnExistingOrderExists() {
         OrderUpdateDto mock = new OrderUpdateDto();
         OrderEntryJpa mockOrderEntry = new OrderEntryJpa();
-
         mock.setBeanAdditions(new ArrayList<>());
         mock.setBeanDeletions(new ArrayList<>());
         mock.setBeanUpdates(new ArrayList<>());
         mockOrderEntry.setId("test");
-
         when(orderRepo.save(any())).thenReturn(mockOrderEntry);
         when(orderRepo.findById("test")).thenReturn(Optional.of(mockOrderEntry));
 
@@ -135,13 +117,11 @@ public class OrderControllerIntTest {
     void updateOrder_ShouldUpdateAnExistingOrderAndThenSaveTheChange_GivenNoIdInPathAndAnExistingOrderExists() {
         OrderUpdateDto mock = new OrderUpdateDto();
         OrderEntryJpa mockOrderEntry = new OrderEntryJpa();
-
         mock.setBeanAdditions(new ArrayList<>());
         mock.setBeanDeletions(new ArrayList<>());
         mock.setBeanUpdates(new ArrayList<>());
         mock.setId("test");
         mockOrderEntry.setId("test");
-
         when(orderRepo.save(any())).thenReturn(mockOrderEntry);
         when(orderRepo.findById("test")).thenReturn(Optional.of(mockOrderEntry));
 
@@ -161,7 +141,6 @@ public class OrderControllerIntTest {
     @Test
     void updateOrder_ShouldReturnNotFoundException_GivenAnExistingOrderEntryIsNotFound() {
         OrderUpdateDto mock = new OrderUpdateDto();
-
         when(orderRepo.findById("test")).thenReturn(Optional.ofNullable(null));
 
         given()
@@ -183,7 +162,6 @@ public class OrderControllerIntTest {
     void updateOrder_ShouldReturnNotFoundException_GivenNoIdInPathAndAnExistingOrderEntryIsNotFound() {
         OrderUpdateDto mock = new OrderUpdateDto();
         mock.setId("test");
-
         when(orderRepo.findById("test")).thenReturn(Optional.ofNullable(null));
 
         given()

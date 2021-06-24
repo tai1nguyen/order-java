@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepoService orderRepoService;
+
     private final InventoryRepoService inventoryRepoService;
+    
     private final OrderMapperService orderMapperService;
 
     @Autowired

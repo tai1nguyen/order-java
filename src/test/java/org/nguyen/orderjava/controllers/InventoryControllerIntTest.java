@@ -11,12 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.repositories.InventoryRepository;
-import org.nguyen.orderjava.services.InventoryRepoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -27,24 +24,16 @@ public class InventoryControllerIntTest {
     @LocalServerPort
     private int portNumber;
 
-    @InjectMocks
-    InventoryController controller;
-
-    @Autowired
-    InventoryRepoService repoService;
-
     @MockBean
     InventoryRepository inventoryRepo;
 
     @Test
-    void getInventoryDataForBeanType_ShouldReturnDataForBeanType_GivenBeanTypeExistsInDatabase() {
+    void getInventoryDataForBeanType_ShouldReturnDataForBeanType_GivenBeanTypeExists() {
         InventoryEntryJpa mock = new InventoryEntryJpa();
-        
         mock.setBeanType(BeanTypeEnum.ARABICA);
         mock.setPricePerUnit("0");
         mock.setWeightPerUnit("1");
         mock.setQuantity("1");
-
         when(inventoryRepo.findById(any())).thenReturn(Optional.of(mock));
 
         given()
@@ -66,14 +55,11 @@ public class InventoryControllerIntTest {
     void getAllInventoryData_ShouldReturnAListOfBeanData() {
         List<InventoryEntryJpa> list = new ArrayList<>();
         InventoryEntryJpa mock = new InventoryEntryJpa();
-        
         mock.setBeanType(BeanTypeEnum.ARABICA);
         mock.setPricePerUnit("0");
         mock.setWeightPerUnit("1");
         mock.setQuantity("1");
-
         list.add(mock);
-
         when(inventoryRepo.findAll()).thenReturn(list);
 
         List<InventoryEntryJpa> result = given()

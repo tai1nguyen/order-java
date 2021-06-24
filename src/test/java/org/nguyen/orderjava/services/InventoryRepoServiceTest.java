@@ -3,40 +3,39 @@ package org.nguyen.orderjava.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.repositories.InventoryRepository;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 public class InventoryRepoServiceTest {
 
-    @InjectMocks
-    InventoryRepoService inventoryRepoService;
+    private InventoryRepoService inventoryRepoService;
 
-    @Mock
-    InventoryRepository inventoryRepository;
+    private InventoryRepository inventoryRepository;
+
+    @BeforeEach
+    public void setUp() {
+        this.inventoryRepository = mock(InventoryRepository.class);
+        this.inventoryRepoService = new InventoryRepoService(this.inventoryRepository);
+    }
 
     @Test
-    void findEntryByType_ShouldReturnBeanData_GivenBeanDataExistsInRepo() {
+    public void Given_BeanDataExists_When_AQueryForBeanByTypeIsMade_Then_BeanDataShouldBeReturned() {
         InventoryEntryJpa entry = new InventoryEntryJpa();
         Optional<InventoryEntryJpa> mock = null;
-
         entry.setBeanType(BeanTypeEnum.ARABICA);
         entry.setPricePerUnit("0");
         entry.setWeightPerUnit("0");
         entry.setQuantity("0");
-
         mock = Optional.of(entry);
-
         when(inventoryRepository.findById(BeanTypeEnum.ARABICA.getName())).thenReturn(mock);
 
         InventoryEntryJpa result = inventoryRepoService.findEntryByType(BeanTypeEnum.ARABICA);
@@ -45,9 +44,8 @@ public class InventoryRepoServiceTest {
     }
 
     @Test
-    void findEntryByType_ShouldReturnNull_GivenBeanDataDoesNotExistsInRepo() {
+    public void Given_BeanDataDoesNotExist_When_AQueryForBeanByTypeIsMade_Then_NoDataShouldBeReturned() {
         Optional<InventoryEntryJpa> mock = Optional.ofNullable(null);
-
         when(inventoryRepository.findById(BeanTypeEnum.ARABICA.getName())).thenReturn(mock);
 
         InventoryEntryJpa result = inventoryRepoService.findEntryByType(BeanTypeEnum.ARABICA);
@@ -56,9 +54,8 @@ public class InventoryRepoServiceTest {
     }
 
     @Test
-    void findAllEntries_ShouldReturnAllEntries_GivenBeanDataExistsInRepo() {
+    public void Given_BeadDataExists_When_AQueryForAllBeanDataIsMade_Then_AllBeanDataShouldBeReturned() {
         Iterable<InventoryEntryJpa> mock = getMockInventoryList();
-
         when(inventoryRepository.findAll()).thenReturn(mock);
 
         List<InventoryEntryJpa> entryList = inventoryRepoService.findAllEntries();
@@ -66,7 +63,7 @@ public class InventoryRepoServiceTest {
         assertEquals(entryList.size(), 3);
     }
 
-    List<InventoryEntryJpa> getMockInventoryList() {
+    private List<InventoryEntryJpa> getMockInventoryList() {
         List<InventoryEntryJpa> list = new ArrayList<InventoryEntryJpa>();
         InventoryEntryJpa mockOne = new InventoryEntryJpa();
         InventoryEntryJpa mockTwo = new InventoryEntryJpa();
