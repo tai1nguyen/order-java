@@ -1,0 +1,73 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "name": "order-response",
+    "type": "object",
+    "properties": {
+        "contents": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "beanType": {
+                            "type": "string",
+                            "pattern": "[A-Z]+"
+                        },
+                        "quantity": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "beanType",
+                        "quantity"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "beanType": {
+                            "type": "string",
+                            "pattern": "[A-Z]+"
+                        },
+                        "quantity": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "beanType",
+                        "quantity"
+                    ]
+                }
+            ]
+        },
+        "price": {
+            "type": "number"
+        },
+        "orderDate": {
+            "type": "null"
+        },
+        "deliveryDate": {
+            "type": "null"
+        },
+        "orderedBy": {
+            "type": "string",
+            "pattern": "[a-z]+"
+        },
+        "id": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+        },
+        "complete": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "contents",
+        "price",
+        "orderDate",
+        "deliveryDate",
+        "orderedBy",
+        "id",
+        "complete"
+    ]
+}

@@ -1,15 +1,13 @@
 package org.nguyen.orderjava.services;
 
-import static org.nguyen.orderjava.literals.Services.ORDER_REPO_SERVICE;
-
 import java.util.Optional;
 
-import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
+import org.nguyen.orderjava.models.jpa.OrderJpa;
 import org.nguyen.orderjava.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(ORDER_REPO_SERVICE)
+@Service
 public class OrderRepoService {
 
     private final OrderRepository orderRepo;
@@ -19,9 +17,9 @@ public class OrderRepoService {
         this.orderRepo = orderRepository;
     }
 
-    public OrderEntryJpa findOrderById(String id) {
-        OrderEntryJpa orderEntry = null;
-        Optional<OrderEntryJpa> entry = orderRepo.findById(id);
+    public OrderJpa findOrderById(String id) {
+        OrderJpa orderEntry = null;
+        Optional<OrderJpa> entry = orderRepo.findById(id);
 
         if (entry.isPresent()) {
             orderEntry = entry.get();
@@ -34,8 +32,8 @@ public class OrderRepoService {
         orderRepo.deleteById(id);
     }
 
-    public OrderEntryJpa saveOrder(OrderEntryJpa orderEntry) {
-        OrderEntryJpa savedEntity = orderRepo.save(orderEntry);
+    public OrderJpa saveOrder(OrderJpa orderEntry) {
+        OrderJpa savedEntity = orderRepo.save(orderEntry);
 
         return savedEntity;
     }

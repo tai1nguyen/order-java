@@ -5,16 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class OrderUpdateDto {
 
     private String id;
 
-    private List<OrderContentDto> beanAdditions;
+    private List<OrderContentDto> contentAdditions;
 
-    private List<OrderContentDto> beanDeletions;
+    private List<OrderContentDto> contentDeletions;
 
-    private List<OrderContentDto> beanUpdates;
+    private List<OrderContentDto> contentUpdates;
 
     private Date changeDate;
 
@@ -26,28 +27,28 @@ public class OrderUpdateDto {
         this.id = id;
     }
 
-    public List<OrderContentDto> getBeanAdditions() {
-        return beanAdditions;
+    public List<OrderContentDto> getContentAdditions() {
+        return contentAdditions;
     }
 
-    public void setBeanAdditions(List<OrderContentDto> beanAdditions) {
-        this.beanAdditions = beanAdditions;
+    public void setContentAdditions(List<OrderContentDto> contentAdditions) {
+        this.contentAdditions = contentAdditions;
     }
 
-    public List<OrderContentDto> getBeanDeletions() {
-        return beanDeletions;
+    public List<OrderContentDto> getContentDeletions() {
+        return contentDeletions;
     }
 
-    public void setBeanDeletions(List<OrderContentDto> beanDeletions) {
-        this.beanDeletions = beanDeletions;
+    public void setContentDeletions(List<OrderContentDto> contentDeletions) {
+        this.contentDeletions = contentDeletions;
     }
 
-    public List<OrderContentDto> getBeanUpdates() {
-        return beanUpdates;
+    public List<OrderContentDto> getContentUpdates() {
+        return contentUpdates;
     }
 
-    public void setBeanUpdates(List<OrderContentDto> beanUpdates) {
-        this.beanUpdates = beanUpdates;
+    public void setContentUpdates(List<OrderContentDto> contentUpdates) {
+        this.contentUpdates = contentUpdates;
     }
 
     public Date getChangeDate() {
@@ -61,5 +62,10 @@ public class OrderUpdateDto {
     @Override
     public boolean equals(Object suspect) {
         return EqualsBuilder.reflectionEquals(this, suspect);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

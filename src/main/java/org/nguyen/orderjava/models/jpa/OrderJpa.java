@@ -19,7 +19,7 @@ import org.nguyen.orderjava.models.BeanTypeEnum;
 
 @Entity
 @Table(name = "ORDERS")
-public class OrderEntryJpa {
+public class OrderJpa {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -32,7 +32,7 @@ public class OrderEntryJpa {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ORDER_ID", nullable = false)
-    List<OrderContentJpa> beans = new ArrayList<OrderContentJpa>();
+    List<OrderContentJpa> contents = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -50,20 +50,20 @@ public class OrderEntryJpa {
         this.orderedBy = orderedBy;
     }
 
-    public List<OrderContentJpa> getBeans() {
-        return beans;
+    public List<OrderContentJpa> getContents() {
+        return contents;
     }
 
-    public void addBean(OrderContentJpa bean) {
-        this.beans.add(bean);
+    public void addContent(OrderContentJpa content) {
+        this.contents.add(content);
     }
 
-    public void removeBean(BeanTypeEnum type) {
-        OrderContentJpa bean = findMatchingContent(
-            type.getName(), this.beans
+    public void removeContent(BeanTypeEnum type) {
+        OrderContentJpa content = findMatchingContent(
+            type.getName(), this.contents
         );
 
-        this.beans.remove(bean);
+        this.contents.remove(content);
     }
 
     @Override
@@ -77,9 +77,9 @@ public class OrderEntryJpa {
     }
 
     private OrderContentJpa findMatchingContent(String type, List<OrderContentJpa> suspectContent) {
-        for (OrderContentJpa bean : suspectContent) {
-            if (bean.getBeanType().equals(type)) {
-                return bean;
+        for (OrderContentJpa suspect : suspectContent) {
+            if (suspect.getBeanType().equals(type)) {
+                return suspect;
             }
         }
 

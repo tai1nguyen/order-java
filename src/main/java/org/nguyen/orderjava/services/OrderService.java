@@ -1,47 +1,41 @@
 package org.nguyen.orderjava.services;
 
-import static org.nguyen.orderjava.literals.Services.ORDER_SERVICE;
-
 import java.util.List;
 
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.dto.OrderDto;
 import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
-import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
+import org.nguyen.orderjava.models.jpa.OrderJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service(ORDER_SERVICE)
+@Service
 public class OrderService {
 
     private final OrderRepoService orderRepoService;
 
     private final InventoryRepoService inventoryRepoService;
-    
-    private final OrderMapperService orderMapperService;
 
     @Autowired
     OrderService(
             OrderRepoService orderRepoService,
-            InventoryRepoService inventoryRepoService,
-            OrderMapperService orderMapperService
+            InventoryRepoService inventoryRepoService
     ) {
         this.orderRepoService = orderRepoService;
         this.inventoryRepoService = inventoryRepoService;
-        this.orderMapperService = orderMapperService;
     }
 
     @Transactional
     public OrderDto getOrderById(String id) throws OrderNotFoundException {
-        OrderEntryJpa orderEntry = orderRepoService.findOrderById(id);
+        OrderJpa orderEntry = orderRepoService.findOrderById(id);
 
         if (orderEntry != null) {
             List<InventoryEntryJpa> beanData = inventoryRepoService.findAllEntries();
 
-            return orderMapperService.mapOrderEntryToOrderData(id, orderEntry, beanData);
+            return OrderMapper.mapOrderEntryToOrderData(orderEntry, beanData);
         }
         else {
             throw new OrderNotFoundException(id);
@@ -49,13 +43,16 @@ public class OrderService {
     }
 
     @Transactional
-    public String updateOrder(String id, OrderUpdateDto update) throws OrderNotFoundException {
-        OrderEntryJpa orderEntry = orderRepoService.findOrderById(id);
+    public OrderDto updateOrder(String id, OrderUpdateDto update) throws OrderNotFoundException {
+        OrderJpa orderEntry = orderRepoService.findOrderById(id);
 
         if (orderEntry != null) {
-            OrderEntryJpa updatedOrder = orderMapperService.updateOrderEntry(orderEntry, update);
+            OrderJpa updatedOrder = OrderMapper.updateOrderEntry(orderEntry, update);
+            List<InventoryEntryJpa> beanData = inventoryRepoService.findAllEntries();
 
-            return orderRepoService.saveOrder(updatedOrder).getId();
+            orderRepoService.saveOrder(updatedOrder);
+
+            return OrderMapper.mapOrderEntryToOrderData(orderEntry, beanData);
         }
         else {
             throw new OrderNotFoundException(id);
@@ -73,9 +70,12 @@ public class OrderService {
     }
 
     @Transactional
-    public String saveOrder(OrderDto orderData) {
-        OrderEntryJpa orderEntry = orderMapperService.mapOrderDataToOrderEntry(orderData);
+    public OrderDto saveOrder(OrderDto orderData) {
+        OrderJpa orderEntry = OrderMapper.mapOrderDataToOrderEntry(orderData);
+        List<InventoryEntryJpa> beanData = inventoryRepoService.findAllEntries();
 
-        return orderRepoService.saveOrder(orderEntry).getId();
+        orderRepoService.saveOrder(orderEntry);
+        
+        return OrderMapper.mapOrderEntryToOrderData(orderEntry, beanData);
     }
 }

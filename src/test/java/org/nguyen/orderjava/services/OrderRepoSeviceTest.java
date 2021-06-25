@@ -10,10 +10,10 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
+import org.nguyen.orderjava.models.jpa.OrderJpa;
 import org.nguyen.orderjava.repositories.OrderRepository;
 
-public class OrderRepoSeviceTest {
+class OrderRepoSeviceTest {
 
     private OrderRepoService orderRepoService;
 
@@ -26,8 +26,8 @@ public class OrderRepoSeviceTest {
     }
 
     @Test
-    public void Given_OrderDataForIdExists_When_AQueryIsMadeForOrderById_Then_OrderDataShouldBeReturned() {
-        OrderEntryJpa expected = new OrderEntryJpa();
+    void Given_OrderDataForIdExists_When_AQueryIsMadeForOrderById_Then_OrderDataShouldBeReturned() {
+        OrderJpa expected = new OrderJpa();
         expected.setId("1");
         when(orderRepo.findById("1")).thenReturn(Optional.of(expected));
 
@@ -35,16 +35,16 @@ public class OrderRepoSeviceTest {
     }
 
     @Test
-    public void Given_OrderDataForIdDoesNotExist_When_AQueryIsMadeForOrderById_Then_NoOrderDataShouldBeReturned() {
-        Optional<OrderEntryJpa> mock = Optional.ofNullable(null);
+    void Given_OrderDataForIdDoesNotExist_When_AQueryIsMadeForOrderById_Then_NoOrderDataShouldBeReturned() {
+        Optional<OrderJpa> mock = Optional.ofNullable(null);
         when(orderRepo.findById("1")).thenReturn(mock);
 
         assertNull(orderRepoService.findOrderById("1"));
     }
 
     @Test
-    public void Given_OrderJpaExists_When_ATransactionToSaveTheOrderSuceeds_Then_TheOrderJpaShouldBeReturned() {
-        OrderEntryJpa mock = new OrderEntryJpa();
+    void Given_OrderJpaExists_When_ATransactionToSaveTheOrderSuceeds_Then_TheOrderJpaShouldBeReturned() {
+        OrderJpa mock = new OrderJpa();
         when(orderRepo.save(any())).thenReturn(mock);
 
         assertEquals(mock, orderRepoService.saveOrder(mock));

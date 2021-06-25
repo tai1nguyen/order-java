@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 import org.nguyen.orderjava.models.dto.OrderContentDto;
@@ -14,56 +13,49 @@ import org.nguyen.orderjava.models.dto.OrderDto;
 import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.models.jpa.OrderContentJpa;
-import org.nguyen.orderjava.models.jpa.OrderEntryJpa;
+import org.nguyen.orderjava.models.jpa.OrderJpa;
 
-public class OrderMapperServiceTest {
-
-    private OrderMapperService mapperService;
-
-    @BeforeEach
-    public void setUp() {
-        this.mapperService = new OrderMapperService();
-    }
+class OrderMapperTest {
 
     @Test
-    public void Given_OrderAndBeanDataExists_When_AskedToMapOrderJpaToOrderDto_Then_MappedOrderDtoShouldBeReturned() {
+    void Given_OrderAndBeanDataExists_When_AskedToMapOrderJpaToOrderDto_Then_MappedOrderDtoShouldBeReturned() {
         OrderDto expectedOrder = mockOrderData();
         List<OrderContentDto> expectedOrderBeans = new ArrayList<>();
-        OrderEntryJpa mockOrderEntry = mockOrderEntry("1");
+        OrderJpa mockOrderEntry = mockOrderEntry("1");
         expectedOrderBeans.add(mockOrderContentData(BeanTypeEnum.ARABICA, "1"));
-        expectedOrder.setBeans(expectedOrderBeans);
-        mockOrderEntry.addBean(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
+        expectedOrder.setContents(expectedOrderBeans);
+        mockOrderEntry.addContent(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
 
-        OrderDto result = mapperService.mapOrderEntryToOrderData("1", mockOrderEntry, mockBeans());
+        OrderDto result = OrderMapper.mapOrderEntryToOrderData(mockOrderEntry, mockBeans());
 
         assertEquals(expectedOrder, result);
     }
 
     @Test
-    public void Given_BeanDataExists_When_AskedToMapOrderDtoToOrderJpa_Then_MappedOrderJpaShouldBeReturned() {
-        OrderEntryJpa expectedOrderEntry = mockOrderEntry(null);
+    void Given_BeanDataExists_When_AskedToMapOrderDtoToOrderJpa_Then_MappedOrderJpaShouldBeReturned() {
+        OrderJpa expectedOrderEntry = mockOrderEntry(null);
         OrderDto mockOrderData = mockOrderData();
         List<OrderContentDto> mockOrderDataBeans = new ArrayList<>();
-        expectedOrderEntry.addBean(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
+        expectedOrderEntry.addContent(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
         mockOrderDataBeans.add(mockOrderContentData(BeanTypeEnum.ARABICA, "1"));
-        mockOrderData.setBeans(mockOrderDataBeans);
+        mockOrderData.setContents(mockOrderDataBeans);
 
-        OrderEntryJpa result = mapperService.mapOrderDataToOrderEntry(mockOrderData);
+        OrderJpa result = OrderMapper.mapOrderDataToOrderEntry(mockOrderData);
 
         assertEquals(expectedOrderEntry, result);
     }
 
     @Test
-    public void Given_OrderUpdateDtoAndOrderJpa_When_AskedToUpdateOrderJpa_Then_ShouldReturnUpdatedOrderJpa() {
-        OrderEntryJpa mock = mockOrderEntry("1");
-        OrderEntryJpa expected = mockOrderEntry("1");
+    void Given_OrderUpdateDtoAndOrderJpa_When_AskedToUpdateOrderJpa_Then_ShouldReturnUpdatedOrderJpa() {
+        OrderJpa mock = mockOrderEntry("1");
+        OrderJpa expected = mockOrderEntry("1");
         OrderUpdateDto udpateData = mockOrderUpdateData();
-        mock.addBean(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
-        mock.addBean(mockOrderContentEntry(BeanTypeEnum.EXCELSA, "2"));
-        expected.addBean(mockOrderContentEntry(BeanTypeEnum.EXCELSA, "4"));
-        expected.addBean(mockOrderContentEntry(BeanTypeEnum.LIBERIAN, "3"));
+        mock.addContent(mockOrderContentEntry(BeanTypeEnum.ARABICA, "1"));
+        mock.addContent(mockOrderContentEntry(BeanTypeEnum.EXCELSA, "2"));
+        expected.addContent(mockOrderContentEntry(BeanTypeEnum.EXCELSA, "4"));
+        expected.addContent(mockOrderContentEntry(BeanTypeEnum.LIBERIAN, "3"));
 
-        OrderEntryJpa result = mapperService.updateOrderEntry(mock, udpateData);
+        OrderJpa result = OrderMapper.updateOrderEntry(mock, udpateData);
 
         assertEquals(expected, result);
     }
@@ -78,23 +70,17 @@ public class OrderMapperServiceTest {
         deletions.add(mockOrderContentData(BeanTypeEnum.ARABICA, null));
         updates.add(mockOrderContentData(BeanTypeEnum.EXCELSA, "4"));
 
-        mock.setBeanAdditions(additions);
-        mock.setBeanDeletions(deletions);
-        mock.setBeanUpdates(updates);
+        mock.setContentAdditions(additions);
+        mock.setContentDeletions(deletions);
+        mock.setContentUpdates(updates);
 
         return mock;
     }
 
     private OrderContentDto mockOrderContentData(BeanTypeEnum type, String quantity) {
-        OrderContentDto mock = new OrderContentDto();
+        Integer quantityInteger = quantity == null ? null : Integer.parseInt(quantity);
 
-        mock.setBeanType(type);
-
-        if (quantity != null) {
-            mock.setQuantity(Integer.parseInt(quantity));
-        }
-
-        return mock;
+        return new OrderContentDto(type, quantityInteger);
     }
 
     private OrderDto mockOrderData() {
@@ -107,8 +93,8 @@ public class OrderMapperServiceTest {
         return mock;
     }
 
-    private OrderEntryJpa mockOrderEntry(String id) {
-        OrderEntryJpa mock = new OrderEntryJpa();
+    private OrderJpa mockOrderEntry(String id) {
+        OrderJpa mock = new OrderJpa();
 
         if (id != null) {
             mock.setId(id);
@@ -129,12 +115,12 @@ public class OrderMapperServiceTest {
     }
 
     private InventoryEntryJpa mockBeanData() {
-        InventoryEntryJpa mock = new InventoryEntryJpa();
-
-        mock.setBeanType(BeanTypeEnum.ARABICA);
-        mock.setPricePerUnit("1.05");
-        mock.setQuantity("10");
-        mock.setWeightPerUnit("0.05");
+        InventoryEntryJpa mock = new InventoryEntryJpa(
+                BeanTypeEnum.ARABICA,
+                new BigDecimal("0.05"),
+                new BigDecimal("1.05"),
+                10
+        );
 
         return mock;
     }

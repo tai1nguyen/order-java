@@ -5,10 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class OrderDto {
 
-    private List<OrderContentDto> beans;
+    private List<OrderContentDto> contents;
 
     private BigDecimal price = new BigDecimal(0);
 
@@ -22,12 +23,12 @@ public class OrderDto {
 
     private String id;
 
-    public List<OrderContentDto> getBeans() {
-        return beans;
+    public List<OrderContentDto> getContents() {
+        return contents;
     }
 
-    public void setBeans(List<OrderContentDto> beans) {
-        this.beans = beans;
+    public void setContents(List<OrderContentDto> contents) {
+        this.contents = contents;
     }
 
     public BigDecimal getPrice() {
@@ -81,5 +82,10 @@ public class OrderDto {
     @Override
     public boolean equals(Object suspect) {
         return EqualsBuilder.reflectionEquals(this, suspect);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

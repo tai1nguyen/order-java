@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.nguyen.orderjava.models.BeanTypeEnum;
 
 @Entity
 @Table(name = "ORDER_CONTENT")
@@ -25,6 +26,13 @@ public class OrderContentJpa {
 
     @Column(name = "QUANTITY")
     private String quantity;
+
+    public OrderContentJpa() {}
+
+    public OrderContentJpa(BeanTypeEnum beanType, Integer quantity) {
+        this.beanType = beanType.getName();
+        this.quantity = String.valueOf(quantity);
+    }
 
     public String getId() {
         return id;

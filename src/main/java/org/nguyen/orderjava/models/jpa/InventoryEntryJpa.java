@@ -1,5 +1,7 @@
 package org.nguyen.orderjava.models.jpa;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,17 +16,31 @@ import org.nguyen.orderjava.models.BeanTypeEnum;
 public class InventoryEntryJpa {
 
     @Id
-    @Column(name="BEAN_TYPE")
+    @Column(name = "BEAN_TYPE")
     private String beanType;
 
-    @Column(name="WEIGHT_PER_UNIT")
+    @Column(name = "WEIGHT_PER_UNIT")
     private String weightPerUnit;
 
-    @Column(name="PRICE_PER_UNIT")
+    @Column(name = "PRICE_PER_UNIT")
     private String pricePerUnit;
 
-    @Column(name="QUANTITY")
+    @Column(name = "QUANTITY")
     private String quantity;
+
+    public InventoryEntryJpa() {}
+
+    public InventoryEntryJpa(
+            BeanTypeEnum beanType,
+            BigDecimal weightPerUnit,
+            BigDecimal pricePerUnit,
+            Integer quantity
+    ) {
+        this.beanType = beanType.getName();
+        this.weightPerUnit = weightPerUnit.toPlainString();
+        this.pricePerUnit = pricePerUnit.toPlainString();
+        this.quantity = String.valueOf(quantity);
+    }
 
     public BeanTypeEnum getBeanType() {
         return BeanTypeEnum.getType(beanType);
@@ -34,28 +50,28 @@ public class InventoryEntryJpa {
         this.beanType = beanType.getName();
     }
 
-    public String getWeightPerUnit() {
-        return weightPerUnit;
+    public BigDecimal getWeightPerUnit() {
+        return new BigDecimal(weightPerUnit);
     }
 
-    public void setWeightPerUnit(String weightPerUnit) {
-        this.weightPerUnit = weightPerUnit;
+    public void setWeightPerUnit(BigDecimal weightPerUnit) {
+        this.weightPerUnit = weightPerUnit.toPlainString();
     }
 
-    public String getPricePerUnit() {
-        return pricePerUnit;
+    public BigDecimal getPricePerUnit() {
+        return new BigDecimal(pricePerUnit);
     }
 
-    public void setPricePerUnit(String pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
+    public void setPricePerUnit(BigDecimal pricePerUnit) {
+        this.pricePerUnit = pricePerUnit.toPlainString();
     }
 
-    public String getQuantity() {
-        return quantity;
+    public Integer getQuantity() {
+        return Integer.valueOf(quantity);
     }
 
-    public void setQuantity(String quantity) {
-		this.quantity = quantity;
+    public void setQuantity(Integer quantity) {
+        this.quantity = String.valueOf(quantity);
     }
 
     @Override

@@ -1,12 +1,9 @@
 package org.nguyen.orderjava.controllers;
 
-import java.util.Map;
-
 import org.nguyen.orderjava.exceptions.OrderNotFoundException;
 import org.nguyen.orderjava.models.dto.OrderDto;
 import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.services.OrderService;
-import org.nguyen.orderjava.utils.RestResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,8 +43,8 @@ public class OrderController {
             notes = "Create an order with the provided order details"
     )
     @PostMapping
-    public Map<String, String> createOrder(@RequestBody OrderDto data) {
-        return RestResponseUtils.getResponseJson("id", orderService.saveOrder(data));
+    public OrderDto createOrder(@RequestBody OrderDto data) {
+        return orderService.saveOrder(data);
     }
 
     @ApiOperation(
@@ -55,11 +52,11 @@ public class OrderController {
             notes = "Finds an existing order by ID and updates it with the provided update details"
     )
     @PatchMapping(value = "/{id}")
-    public Map<String, String> updateOrder(
+    public OrderDto updateOrder(
             @PathVariable String id,
             @RequestBody OrderUpdateDto update
     ) throws OrderNotFoundException {
-        return RestResponseUtils.getResponseJson("id", updateOrderById(id, update));
+        return updateOrderById(id, update);
     }
 
     @ApiOperation(
@@ -67,9 +64,9 @@ public class OrderController {
             notes = "Finds an existing order and updates it with the provided update details"
     )
     @PutMapping
-    public Map<String, String> updateOrder(@RequestBody OrderUpdateDto update)
+    public OrderDto updateOrder(@RequestBody OrderUpdateDto update)
             throws OrderNotFoundException {
-        return RestResponseUtils.getResponseJson("id", updateOrderById(update.getId(), update));
+        return updateOrderById(update.getId(), update);
     }
 
     @ApiOperation(
@@ -81,7 +78,7 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
-    private String updateOrderById(String id, OrderUpdateDto update) throws OrderNotFoundException {
+    private OrderDto updateOrderById(String id, OrderUpdateDto update) throws OrderNotFoundException {
         return orderService.updateOrder(id, update);
     }
 }

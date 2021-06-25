@@ -1,6 +1,7 @@
 package org.nguyen.orderjava.models;
 
 public enum BeanTypeEnum {
+
     ARABICA("ARABICA"),
     ROBUSTA("ROBUSTA"),
     LIBERIAN("LIBERIAN"),
@@ -20,7 +21,7 @@ public enum BeanTypeEnum {
         for (BeanTypeEnum beanType : BeanTypeEnum.values()) {
             if (beanType.getName().equalsIgnoreCase(type)) {
                 return beanType;
-            } 
+            }
         }
 
         return null;
