@@ -26,11 +26,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {
-    DataSourceAutoConfiguration.class, 
-    DataSourceTransactionManagerAutoConfiguration.class, 
-    HibernateJpaAutoConfiguration.class
-})
+@EnableAutoConfiguration(
+    exclude = {
+        DataSourceAutoConfiguration.class,
+        DataSourceTransactionManagerAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class
+    }
+)
 class InventoryControllerIntTest {
 
     private final String INVENTORY_RESPONSE_SCHEMA = "json/inventory-response.schema.json";
@@ -72,12 +74,12 @@ class InventoryControllerIntTest {
     void Given_BeanDataExists_When_ARequestIsMadeForAllBeanData_Then_AllBeanDataShouldBeReturnedInAList() {
         List<InventoryEntryJpa> list = new ArrayList<>();
         list.add(
-            new InventoryEntryJpa(
-                BeanTypeEnum.ARABICA,
-                new BigDecimal("1"),
-                new BigDecimal("0"),
-                1
-            )
+                new InventoryEntryJpa(
+                        BeanTypeEnum.ARABICA,
+                        new BigDecimal("1"),
+                        new BigDecimal("0"),
+                        1
+                )
         );
         when(inventoryRepo.findAll()).thenReturn(list);
 

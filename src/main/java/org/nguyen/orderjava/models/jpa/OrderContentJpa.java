@@ -50,12 +50,12 @@ public class OrderContentJpa {
         this.beanType = beanType;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public Integer getQuantity() {
+        return Integer.valueOf(quantity);
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setQuantity(Integer quantity) {
+        this.quantity = String.valueOf(quantity);
     }
 
     @Override

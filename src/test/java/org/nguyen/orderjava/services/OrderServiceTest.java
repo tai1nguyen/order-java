@@ -77,7 +77,7 @@ class OrderServiceTest {
         expected.setOrderedBy("foo");
         expected.setPrice(new BigDecimal("6.0"));
         orderContent.setBeanType(BeanTypeEnum.LIBERIAN.getName());
-        orderContent.setQuantity("3");
+        orderContent.setQuantity(3);
         orderEntry.addContent(orderContent);
         update.setId("1");
         update.setContentAdditions(Arrays.asList(new OrderContentDto(BeanTypeEnum.EXCELSA, 1)));
@@ -129,7 +129,7 @@ class OrderServiceTest {
         OrderContentJpa mockContent = new OrderContentJpa();
 
         mockContent.setBeanType(BeanTypeEnum.ARABICA.getName());
-        mockContent.setQuantity("50");
+        mockContent.setQuantity(50);
         mock.setId(id);
         mock.setOrderedBy("foo");
         mock.addContent(mockContent);

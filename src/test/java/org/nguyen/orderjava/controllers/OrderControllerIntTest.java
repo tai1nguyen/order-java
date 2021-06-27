@@ -37,11 +37,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {
-    DataSourceAutoConfiguration.class, 
-    DataSourceTransactionManagerAutoConfiguration.class, 
-    HibernateJpaAutoConfiguration.class
-})
+@EnableAutoConfiguration(
+    exclude = {
+        DataSourceAutoConfiguration.class,
+        DataSourceTransactionManagerAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class
+    }
+)
 class OrderControllerIntTest {
 
     private final String ORDER_RESPONSE_SCHEMA = "json/order-response.schema.json";
@@ -60,14 +62,17 @@ class OrderControllerIntTest {
         OrderJpa order = new OrderJpa();
         OrderContentJpa orderContent1 = new OrderContentJpa(BeanTypeEnum.ARABICA, 1);
         OrderContentJpa orderContent2 = new OrderContentJpa(BeanTypeEnum.LIBERIAN, 4);
+        orderContent1.setId("1");
+        orderContent2.setId("2");
         order.addContent(orderContent1);
         order.addContent(orderContent2);
-        order.setOrderedBy("foo");
         order.setId("1");
+        order.setOrderedBy("foo");
         when(orderRepo.findById("1")).thenReturn(Optional.of(order));
         when(inventoryRepo.findAll()).thenReturn(createInventory());
 
-        given().port(portNumber)
+        given()
+                .port(portNumber)
                 .queryParam("id", "1")
         .when()
                 .get("/order-java/v1/order")
@@ -125,10 +130,12 @@ class OrderControllerIntTest {
         OrderJpa order = new OrderJpa();
         OrderContentJpa orderContent1 = new OrderContentJpa(BeanTypeEnum.ARABICA, 1);
         OrderContentJpa orderContent2 = new OrderContentJpa(BeanTypeEnum.LIBERIAN, 4);
+        orderContent1.setId("1");
+        orderContent2.setId("2");
         order.addContent(orderContent1);
         order.addContent(orderContent2);
-        order.setOrderedBy("foo");
         order.setId("1");
+        order.setOrderedBy("foo");
         when(orderRepo.save(any(OrderJpa.class))).then(returnOrderWithId(null));
         when(orderRepo.findById("1")).thenReturn(Optional.of(order));
         when(inventoryRepo.findAll()).thenReturn(createInventory());
@@ -152,6 +159,8 @@ class OrderControllerIntTest {
         OrderJpa order = new OrderJpa();
         OrderContentJpa orderContent1 = new OrderContentJpa(BeanTypeEnum.ARABICA, 1);
         OrderContentJpa orderContent2 = new OrderContentJpa(BeanTypeEnum.LIBERIAN, 4);
+        orderContent1.setId("1");
+        orderContent2.setId("2");
         order.addContent(orderContent1);
         order.addContent(orderContent2);
         order.setId("1");
@@ -231,9 +240,15 @@ class OrderControllerIntTest {
         OrderUpdateDto orderUpdate = new OrderUpdateDto();
         orderUpdate.setId(id);
 
-        orderUpdate.setContentAdditions(Arrays.asList(new OrderContentDto(BeanTypeEnum.ROBUSTA, 3)));
-        orderUpdate.setContentDeletions(Arrays.asList(new OrderContentDto(BeanTypeEnum.ARABICA, null)));
-        orderUpdate.setContentUpdates(Arrays.asList(new OrderContentDto(BeanTypeEnum.LIBERIAN, 6)));
+        orderUpdate.setContentAdditions(
+                Arrays.asList(new OrderContentDto(BeanTypeEnum.ROBUSTA, 3))
+        );
+        orderUpdate.setContentDeletions(
+                Arrays.asList(new OrderContentDto(BeanTypeEnum.ARABICA, null))
+        );
+        orderUpdate.setContentUpdates(
+                Arrays.asList(new OrderContentDto(BeanTypeEnum.LIBERIAN, 6))
+        );
 
         return orderUpdate;
     }
@@ -241,10 +256,38 @@ class OrderControllerIntTest {
     private List<InventoryEntryJpa> createInventory() {
         List<InventoryEntryJpa> list = new ArrayList<>();
 
-        list.add(new InventoryEntryJpa(BeanTypeEnum.ARABICA, new BigDecimal("0.25"), new BigDecimal("0.25"), 10));
-        list.add(new InventoryEntryJpa(BeanTypeEnum.EXCELSA, new BigDecimal("0.50"), new BigDecimal("0.50"), 10));
-        list.add(new InventoryEntryJpa(BeanTypeEnum.LIBERIAN, new BigDecimal("0.75"), new BigDecimal("0.75"), 10));
-        list.add(new InventoryEntryJpa(BeanTypeEnum.ROBUSTA, new BigDecimal("1.00"), new BigDecimal("1.00"), 10));
+        list.add(
+                new InventoryEntryJpa(
+                        BeanTypeEnum.ARABICA,
+                        new BigDecimal("0.25"),
+                        new BigDecimal("0.25"),
+                        10
+                )
+        );
+        list.add(
+                new InventoryEntryJpa(
+                        BeanTypeEnum.EXCELSA,
+                        new BigDecimal("0.50"),
+                        new BigDecimal("0.50"),
+                        10
+                )
+        );
+        list.add(
+                new InventoryEntryJpa(
+                        BeanTypeEnum.LIBERIAN,
+                        new BigDecimal("0.75"),
+                        new BigDecimal("0.75"),
+                        10
+                )
+        );
+        list.add(
+                new InventoryEntryJpa(
+                        BeanTypeEnum.ROBUSTA,
+                        new BigDecimal("1.00"),
+                        new BigDecimal("1.00"),
+                        10
+                )
+        );
 
         return list;
     }

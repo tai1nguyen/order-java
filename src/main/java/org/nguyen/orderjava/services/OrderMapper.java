@@ -146,7 +146,7 @@ public class OrderMapper {
                 OrderContentJpa contentEntry = new OrderContentJpa();
 
                 contentEntry.setBeanType(type.getName());
-                contentEntry.setQuantity(bean.getQuantity().toString());
+                contentEntry.setQuantity(bean.getQuantity());
                 contentList.add(contentEntry);
             }
         }
