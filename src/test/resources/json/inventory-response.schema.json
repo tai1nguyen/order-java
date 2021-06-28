@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "name": "inventory-response",
+    "type": "object",
+    "properties": {
+        "beanType": {
+            "type": "string",
+            "pattern": "[A-Z]+"
+        },
+        "pricePerUnit": {
+            "type": "integer"
+        },
+        "quantity": {
+            "type": "integer"
+        },
+        "weightPerUnit": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "beanType",
+        "pricePerUnit",
+        "quantity",
+        "weightPerUnit"
+    ]
+}

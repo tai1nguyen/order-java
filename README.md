@@ -23,7 +23,7 @@ A simple **Spring Boot** CRUD application for ordering coffee beans. A personal 
 - API documentation can be found at `http://localhost:8080/order-java/swagger-ui`
 
 ### Setting up automated formatting in VSCode
-- In order to proceed the **[Java Extension Pack]()** must be installed.
+- In order to proceed the **[Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)** must be installed.
 - Navigate to `./.vscode/settings.json`.
     - Create a new json file named `settings.json` if one does not already exist.
 - Within `settings.json` add the following properties:

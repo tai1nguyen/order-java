@@ -1,50 +1,59 @@
 package org.nguyen.orderjava.controllers;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.repositories.InventoryRepository;
-import org.nguyen.orderjava.services.InventoryRepoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.nguyen.orderjava.repositories.OrderRepository;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class InventoryControllerIntTest {
+@EnableAutoConfiguration(exclude = {
+    DataSourceAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class
+})
+class InventoryControllerIntTest {
+
+    private final String INVENTORY_RESPONSE_SCHEMA = "json/inventory-response.schema.json";
+
+    private final String INVENTORY_LIST_RESPONSE_SCHEMA = "json/inventory-list-response.schema.json";
 
     @LocalServerPort
     private int portNumber;
 
-    @InjectMocks
-    InventoryController controller;
-
-    @Autowired
-    InventoryRepoService repoService;
+    @MockBean
+    OrderRepository orderRepo;
 
     @MockBean
     InventoryRepository inventoryRepo;
 
     @Test
-    void getInventoryDataForBeanType_ShouldReturnDataForBeanType_GivenBeanTypeExistsInDatabase() {
-        InventoryEntryJpa mock = new InventoryEntryJpa();
-        
-        mock.setBeanType(BeanTypeEnum.ARABICA);
-        mock.setPricePerUnit("0");
-        mock.setWeightPerUnit("1");
-        mock.setQuantity("1");
-
+    void Given_BeanDataExists_When_ARequestIsMadeForBeanDataByType_Then_BeanDataShouldBeReturned() {
+        InventoryEntryJpa mock = new InventoryEntryJpa(
+            BeanTypeEnum.ARABICA,
+            new BigDecimal("1"),
+            new BigDecimal("0"),
+            1
+        );
         when(inventoryRepo.findById(any())).thenReturn(Optional.of(mock));
 
         given()
@@ -54,41 +63,27 @@ public class InventoryControllerIntTest {
             .get("/order-java/v1/inventory/bean")
         .then()
             .assertThat()
-            .statusCode(200)
-            .contentType("application/json")
-            .body("beanType", equalTo(BeanTypeEnum.ARABICA.getName()))
-            .body("pricePerUnit", equalTo("0"))
-            .body("weightPerUnit", equalTo("1"))
-            .body("quantity", equalTo("1"));
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(INVENTORY_RESPONSE_SCHEMA));
     }
 
     @Test
-    void getAllInventoryData_ShouldReturnAListOfBeanData() {
+    void Given_BeanDataExists_When_ARequestIsMadeForAllBeanData_Then_AllBeanDataShouldBeReturnedInAList() {
         List<InventoryEntryJpa> list = new ArrayList<>();
-        InventoryEntryJpa mock = new InventoryEntryJpa();
-        
-        mock.setBeanType(BeanTypeEnum.ARABICA);
-        mock.setPricePerUnit("0");
-        mock.setWeightPerUnit("1");
-        mock.setQuantity("1");
-
-        list.add(mock);
-
+        list.add(
+            new InventoryEntryJpa(BeanTypeEnum.ARABICA, new BigDecimal("1"), new BigDecimal("0"), 1)
+        );
         when(inventoryRepo.findAll()).thenReturn(list);
 
-        List<InventoryEntryJpa> result = given()
+        given()
             .port(portNumber)
         .when()
             .get("/order-java/v1/inventory/beans")
         .then()
             .assertThat()
-            .statusCode(200)
-            .contentType("application/json")
-            .extract()
-            .response()
-            .jsonPath()
-            .getList("$");
-
-        assertEquals(result.size(), 1);
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(INVENTORY_LIST_RESPONSE_SCHEMA));
     }
 }

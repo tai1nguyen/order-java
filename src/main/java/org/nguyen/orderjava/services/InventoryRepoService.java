@@ -1,7 +1,5 @@
 package org.nguyen.orderjava.services;
 
-import static org.nguyen.orderjava.literals.Services.INVENTORY_REPO_SERVICE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +10,7 @@ import org.nguyen.orderjava.repositories.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(INVENTORY_REPO_SERVICE)
+@Service
 public class InventoryRepoService {
 
     private final InventoryRepository inventoryRepo;

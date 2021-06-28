@@ -17,8 +17,7 @@ public class ApiDocConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
+        return new Docket(DocumentationType.SWAGGER_2).select()
             .apis(RequestHandlerSelectors.basePackage("org.nguyen.orderjava.controllers"))
             .paths(PathSelectors.any())
             .build()
@@ -26,10 +25,9 @@ public class ApiDocConfig {
     }
 
     private ApiInfo info() {
-        return new ApiInfoBuilder()
-            .title("Order Java Application")
+        return new ApiInfoBuilder().title("Order Java Application")
             .description("API documentation for the Order Java Application")
-            .version("0.1")
+            .version("Local-Dev")
             .build();
     }
 }
