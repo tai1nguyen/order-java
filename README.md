@@ -1,6 +1,10 @@
 # Order-Java
 A simple **Spring Boot** CRUD application for ordering coffee beans. A personal project to help with learning **Spring** technologies, **Hibernate**, and **SQL**.
 
+## Prerequisites
+- Java 15
+- Gradle 6.7.1
+
 ## Todo
 - [X] create initial application
     - [X] create database
@@ -15,12 +19,17 @@ A simple **Spring Boot** CRUD application for ordering coffee beans. A personal 
 - [X] add automated API documentation
 
 ## Running the App
-- Start the server with `./gradlew bootRun`. The application will be hosted at `http://localhost:8080/order-java/`
-- Run all tests with `./gradlew test`
+- Start the server with `./gradlew bootRun`.
+    - The application will be hosted at `http://localhost:8080/order-java/`.
+- Run all tests with `./gradlew test`.
 
 ## Tips
-### Documentation
-- API documentation can be found at `http://localhost:8080/order-java/swagger-ui`
+### Helpful Links
+- API documentation can be found at `http://localhost:8080/order-java/swagger-ui`.
+- The code coverage report can be found at `./build/reports/jacoco/test/html/index.html`.
+- The test results can be found at `./build/reports/tests/test/index.html`.
+
+**NOTE:** Both test and code coverage reports will be generated when `./gradlew test` or `./gradlew build` is executed.
 
 ### Setting up automated formatting in VSCode
 - In order to proceed the **[Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)** must be installed.

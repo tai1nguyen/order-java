@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'org.nguyen'
-version = '0.0.1-SNAPSHOT'
+version = 'Local-Dev'
 sourceCompatibility = '15'
 
 repositories {
@@ -27,6 +27,15 @@ dependencies {
         'io.rest-assured:json-path:4.2.0',
         'io.rest-assured:xml-path:4.2.0',
         'org.springframework.boot:spring-boot-starter-test'
+    )
+    annotationProcessor (
+        'org.projectlombok:lombok:1.18.14'
+    )
+    developmentOnly (
+        'org.springframework.boot:spring-boot-devtools'
+    )
+    compileOnly(
+        'org.projectlombok:lombok:1.18.14'
     )
     runtimeOnly(
         'com.h2database:h2'
@@ -64,4 +73,10 @@ sourceSets {
             srcDirs = ['src/test/resources/']
         }
     }
+}
+
+springBoot {
+    // Configure Spring's build properties
+    // for actuator end points.
+    buildInfo()
 }
