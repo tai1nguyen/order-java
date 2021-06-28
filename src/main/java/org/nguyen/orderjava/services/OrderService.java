@@ -20,10 +20,7 @@ public class OrderService {
     private final InventoryRepoService inventoryRepoService;
 
     @Autowired
-    OrderService(
-            OrderRepoService orderRepoService,
-            InventoryRepoService inventoryRepoService
-    ) {
+    OrderService(OrderRepoService orderRepoService, InventoryRepoService inventoryRepoService) {
         this.orderRepoService = orderRepoService;
         this.inventoryRepoService = inventoryRepoService;
     }
@@ -75,7 +72,7 @@ public class OrderService {
         List<InventoryEntryJpa> beanData = inventoryRepoService.findAllEntries();
 
         orderRepoService.saveOrder(orderEntry);
-        
+
         return OrderMapper.mapOrderEntryToOrderData(orderEntry, beanData);
     }
 }

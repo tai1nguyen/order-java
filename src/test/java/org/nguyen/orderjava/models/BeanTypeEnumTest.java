@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 class BeanTypeEnumTest {
-    
+
     @Test
     void Given_BeanTypeExists_When_AskedToGetBeanTypeByString_Then_BeanTypeEnumShouldBeReturned() {
         assertEquals(BeanTypeEnum.ARABICA, BeanTypeEnum.getType("arabica"));

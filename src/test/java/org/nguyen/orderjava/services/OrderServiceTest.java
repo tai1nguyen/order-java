@@ -2,11 +2,11 @@ package org.nguyen.orderjava.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -149,10 +149,10 @@ class OrderServiceTest {
 
     private InventoryEntryJpa mockInventoryEntry(BeanTypeEnum beanType) {
         InventoryEntryJpa mock = new InventoryEntryJpa(
-                beanType,
-                new BigDecimal("0.5"),
-                new BigDecimal("1.0"),
-                100
+            beanType,
+            new BigDecimal("0.5"),
+            new BigDecimal("1.0"),
+            100
         );
 
         return mock;

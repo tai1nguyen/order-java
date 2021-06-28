@@ -17,7 +17,10 @@ public class OrderContentJpa {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GenericGenerator(
+        name = "system-uuid",
+        strategy = "uuid"
+    )
     @Column(name = "ID")
     private String id;
 

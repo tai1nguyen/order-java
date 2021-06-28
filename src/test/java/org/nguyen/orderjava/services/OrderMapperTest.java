@@ -101,10 +101,10 @@ class OrderMapperTest {
 
     private InventoryEntryJpa mockBeanData() {
         InventoryEntryJpa mock = new InventoryEntryJpa(
-                BeanTypeEnum.ARABICA,
-                new BigDecimal("0.05"),
-                new BigDecimal("1.05"),
-                10
+            BeanTypeEnum.ARABICA,
+            new BigDecimal("0.05"),
+            new BigDecimal("1.05"),
+            10
         );
 
         return mock;

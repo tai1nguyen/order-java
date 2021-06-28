@@ -18,16 +18,16 @@ public class ApiDocConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("org.nguyen.orderjava.controllers"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(info());
+            .apis(RequestHandlerSelectors.basePackage("org.nguyen.orderjava.controllers"))
+            .paths(PathSelectors.any())
+            .build()
+            .apiInfo(info());
     }
 
     private ApiInfo info() {
         return new ApiInfoBuilder().title("Order Java Application")
-                .description("API documentation for the Order Java Application")
-                .version("Local-Dev")
-                .build();
+            .description("API documentation for the Order Java Application")
+            .version("Local-Dev")
+            .build();
     }
 }

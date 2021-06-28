@@ -37,13 +37,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(
-    exclude = {
-        DataSourceAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
-    }
-)
+@EnableAutoConfiguration(exclude = {
+    DataSourceAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class
+})
 class OrderControllerIntTest {
 
     private final String ORDER_RESPONSE_SCHEMA = "json/order-response.schema.json";
@@ -72,15 +70,15 @@ class OrderControllerIntTest {
         when(inventoryRepo.findAll()).thenReturn(createInventory());
 
         given()
-                .port(portNumber)
-                .queryParam("id", "1")
+            .port(portNumber)
+            .queryParam("id", "1")
         .when()
-                .get("/order-java/v1/order")
+            .get("/order-java/v1/order")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
     }
 
     @Test
@@ -88,17 +86,17 @@ class OrderControllerIntTest {
         when(orderRepo.findById("1")).thenReturn(Optional.empty());
 
         given()
-                .port(portNumber)
-                .queryParam("id", "1")
+            .port(portNumber)
+            .queryParam("id", "1")
         .when()
-                .get("/order-java/v1/order")
+            .get("/order-java/v1/order")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("error", equalTo("Not Found"))
-                .body("message", equalTo("Order '1' Not Found"))
-                .body("path", equalTo("/order-java/v1/order"));
+            .assertThat()
+            .statusCode(HttpStatus.NOT_FOUND.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body("error", equalTo("Not Found"))
+            .body("message", equalTo("Order '1' Not Found"))
+            .body("path", equalTo("/order-java/v1/order"));
     }
 
     @Test
@@ -112,17 +110,17 @@ class OrderControllerIntTest {
         when(inventoryRepo.findAll()).thenReturn(createInventory());
 
         given()
-                .port(portNumber)
-                .request()
-                .body(order)
-                .contentType("application/json")
+            .port(portNumber)
+            .request()
+            .body(order)
+            .contentType("application/json")
         .when()
-                .post("/order-java/v1/order")
+            .post("/order-java/v1/order")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
     }
 
     @Test
@@ -141,17 +139,17 @@ class OrderControllerIntTest {
         when(inventoryRepo.findAll()).thenReturn(createInventory());
 
         given()
-                .port(portNumber)
-                .request()
-                .body(createOrderUpdate("1"))
-                .contentType("application/json")
+            .port(portNumber)
+            .request()
+            .body(createOrderUpdate("1"))
+            .contentType("application/json")
         .when()
-                .patch("/order-java/v1/order/1")
+            .patch("/order-java/v1/order/1")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
     }
 
     @Test
@@ -170,17 +168,17 @@ class OrderControllerIntTest {
         when(inventoryRepo.findAll()).thenReturn(createInventory());
 
         given()
-                .port(portNumber)
-                .request()
-                .body(createOrderUpdate("1"))
-                .contentType("application/json")
+            .port(portNumber)
+            .request()
+            .body(createOrderUpdate("1"))
+            .contentType("application/json")
         .when()
-                .put("/order-java/v1/order")
+            .put("/order-java/v1/order")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(ORDER_RESPONSE_SCHEMA));
     }
 
     @Test
@@ -188,19 +186,19 @@ class OrderControllerIntTest {
         when(orderRepo.findById("1")).thenReturn(Optional.empty());
 
         given()
-                .port(portNumber)
-                .request()
-                .body(createOrderUpdate("1"))
-                .contentType("application/json")
+            .port(portNumber)
+            .request()
+            .body(createOrderUpdate("1"))
+            .contentType("application/json")
         .when()
-                .patch("/order-java/v1/order/1")
+            .patch("/order-java/v1/order/1")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("error", equalTo("Not Found"))
-                .body("message", equalTo("Order '1' Not Found"))
-                .body("path", equalTo("/order-java/v1/order/1"));
+            .assertThat()
+            .statusCode(HttpStatus.NOT_FOUND.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body("error", equalTo("Not Found"))
+            .body("message", equalTo("Order '1' Not Found"))
+            .body("path", equalTo("/order-java/v1/order/1"));
     }
 
     @Test
@@ -208,19 +206,19 @@ class OrderControllerIntTest {
         when(orderRepo.findById("1")).thenReturn(Optional.empty());
 
         given()
-                .port(portNumber)
-                .request()
-                .body(createOrderUpdate("1"))
-                .contentType("application/json")
+            .port(portNumber)
+            .request()
+            .body(createOrderUpdate("1"))
+            .contentType("application/json")
         .when()
-                .put("/order-java/v1/order")
+            .put("/order-java/v1/order")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("error", equalTo("Not Found"))
-                .body("message", equalTo("Order '1' Not Found"))
-                .body("path", equalTo("/order-java/v1/order"));
+            .assertThat()
+            .statusCode(HttpStatus.NOT_FOUND.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body("error", equalTo("Not Found"))
+            .body("message", equalTo("Order '1' Not Found"))
+            .body("path", equalTo("/order-java/v1/order"));
     }
 
     @Test
@@ -228,27 +226,23 @@ class OrderControllerIntTest {
         doNothing().when(orderRepo).deleteById("1");
 
         given()
-                .port(portNumber)
+            .port(portNumber)
         .when()
-                .delete("/order-java/v1/order/1")
+            .delete("/order-java/v1/order/1")
         .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value());
+            .assertThat()
+            .statusCode(HttpStatus.OK.value());
     }
 
     private OrderUpdateDto createOrderUpdate(String id) {
         OrderUpdateDto orderUpdate = new OrderUpdateDto();
         orderUpdate.setId(id);
 
-        orderUpdate.setContentAdditions(
-                Arrays.asList(new OrderContentDto(BeanTypeEnum.ROBUSTA, 3))
-        );
-        orderUpdate.setContentDeletions(
-                Arrays.asList(new OrderContentDto(BeanTypeEnum.ARABICA, null))
-        );
-        orderUpdate.setContentUpdates(
-                Arrays.asList(new OrderContentDto(BeanTypeEnum.LIBERIAN, 6))
-        );
+        orderUpdate
+            .setContentAdditions(Arrays.asList(new OrderContentDto(BeanTypeEnum.ROBUSTA, 3)));
+        orderUpdate
+            .setContentDeletions(Arrays.asList(new OrderContentDto(BeanTypeEnum.ARABICA, null)));
+        orderUpdate.setContentUpdates(Arrays.asList(new OrderContentDto(BeanTypeEnum.LIBERIAN, 6)));
 
         return orderUpdate;
     }
@@ -257,36 +251,36 @@ class OrderControllerIntTest {
         List<InventoryEntryJpa> list = new ArrayList<>();
 
         list.add(
-                new InventoryEntryJpa(
-                        BeanTypeEnum.ARABICA,
-                        new BigDecimal("0.25"),
-                        new BigDecimal("0.25"),
-                        10
-                )
+            new InventoryEntryJpa(
+                BeanTypeEnum.ARABICA,
+                new BigDecimal("0.25"),
+                new BigDecimal("0.25"),
+                10
+            )
         );
         list.add(
-                new InventoryEntryJpa(
-                        BeanTypeEnum.EXCELSA,
-                        new BigDecimal("0.50"),
-                        new BigDecimal("0.50"),
-                        10
-                )
+            new InventoryEntryJpa(
+                BeanTypeEnum.EXCELSA,
+                new BigDecimal("0.50"),
+                new BigDecimal("0.50"),
+                10
+            )
         );
         list.add(
-                new InventoryEntryJpa(
-                        BeanTypeEnum.LIBERIAN,
-                        new BigDecimal("0.75"),
-                        new BigDecimal("0.75"),
-                        10
-                )
+            new InventoryEntryJpa(
+                BeanTypeEnum.LIBERIAN,
+                new BigDecimal("0.75"),
+                new BigDecimal("0.75"),
+                10
+            )
         );
         list.add(
-                new InventoryEntryJpa(
-                        BeanTypeEnum.ROBUSTA,
-                        new BigDecimal("1.00"),
-                        new BigDecimal("1.00"),
-                        10
-                )
+            new InventoryEntryJpa(
+                BeanTypeEnum.ROBUSTA,
+                new BigDecimal("1.00"),
+                new BigDecimal("1.00"),
+                10
+            )
         );
 
         return list;

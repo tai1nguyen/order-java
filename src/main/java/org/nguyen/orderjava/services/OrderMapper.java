@@ -25,8 +25,8 @@ public class OrderMapper {
      * @return @Class{OrderDto}
      */
     public static OrderDto mapOrderEntryToOrderData(
-            OrderJpa orderEntry,
-            List<InventoryEntryJpa> inventoryEntries
+        OrderJpa orderEntry,
+        List<InventoryEntryJpa> inventoryEntries
     ) {
         List<OrderContentJpa> orderContentEntry = orderEntry.getContents();
         List<OrderContentDto> orderContentData = buildOrderContents(orderContentEntry);
@@ -56,7 +56,7 @@ public class OrderMapper {
         // The IDs of the order content entry and the order entry will be set by the JPA
         // layer.
         List<OrderContentJpa> contentEntryList = buildOrderContentEntries(beans);
-        
+
         return buildOrderEntry(orderData, contentEntryList);
     }
 
@@ -68,7 +68,9 @@ public class OrderMapper {
      * @return @Class{OrderEntryJpa}
      */
     public static OrderJpa updateOrderEntry(OrderJpa orderEntry, OrderUpdateDto update) {
-        List<OrderContentJpa> beanAdditions = buildOrderContentEntries(update.getContentAdditions());
+        List<OrderContentJpa> beanAdditions = buildOrderContentEntries(
+            update.getContentAdditions()
+        );
         List<OrderContentJpa> beanUpdates = buildOrderContentEntries(update.getContentUpdates());
 
         // Add beans.
@@ -84,8 +86,8 @@ public class OrderMapper {
         // Update beans.
         for (OrderContentJpa bean : orderEntry.getContents()) {
             OrderContentJpa beanUpdate = findOrderContentByBeanType(
-                    BeanTypeEnum.getType(bean.getBeanType()),
-                    beanUpdates
+                BeanTypeEnum.getType(bean.getBeanType()),
+                beanUpdates
             );
 
             if (beanUpdate != null) {
@@ -101,7 +103,10 @@ public class OrderMapper {
 
         for (OrderContentJpa content : contentEntries) {
             BeanTypeEnum type = BeanTypeEnum.getType(content.getBeanType());
-            OrderContentDto bean = new OrderContentDto(type, Integer.valueOf(content.getQuantity()));
+            OrderContentDto bean = new OrderContentDto(
+                type,
+                content.getQuantity()
+            );
 
             orderContents.add(bean);
         }
@@ -110,8 +115,8 @@ public class OrderMapper {
     }
 
     private static BigDecimal getTotalPrice(
-            List<OrderContentDto> orderContent,
-            List<InventoryEntryJpa> inventory
+        List<OrderContentDto> orderContent,
+        List<InventoryEntryJpa> inventory
     ) {
         BigDecimal totalPrice = null;
 
@@ -154,7 +159,10 @@ public class OrderMapper {
         return contentList;
     }
 
-    private static OrderJpa buildOrderEntry(OrderDto orderData, List<OrderContentJpa> orderContent) {
+    private static OrderJpa buildOrderEntry(
+        OrderDto orderData,
+        List<OrderContentJpa> orderContent
+    ) {
         OrderJpa orderEntry = new OrderJpa();
 
         if (orderContent != null) {
@@ -169,22 +177,22 @@ public class OrderMapper {
     }
 
     private static OrderContentJpa findOrderContentByBeanType(
-            BeanTypeEnum type,
-            List<OrderContentJpa> orderContent
+        BeanTypeEnum type,
+        List<OrderContentJpa> orderContent
     ) {
         return orderContent.stream()
-                .filter(suspect -> type.equals(BeanTypeEnum.getType(suspect.getBeanType())))
-                .findAny()
-                .orElse(null);
+            .filter(suspect -> type.equals(BeanTypeEnum.getType(suspect.getBeanType())))
+            .findAny()
+            .orElse(null);
     }
 
     private static InventoryEntryJpa findBeanDataByType(
-            List<InventoryEntryJpa> inventory,
-            BeanTypeEnum type
+        List<InventoryEntryJpa> inventory,
+        BeanTypeEnum type
     ) {
         return inventory.stream()
-                .filter(suspect -> type.equals(suspect.getBeanType()))
-                .findAny()
-                .orElse(null);
+            .filter(suspect -> type.equals(suspect.getBeanType()))
+            .findAny()
+            .orElse(null);
     }
 }

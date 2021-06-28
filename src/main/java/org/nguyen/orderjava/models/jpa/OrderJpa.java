@@ -23,15 +23,24 @@ public class OrderJpa {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GenericGenerator(
+        name = "system-uuid",
+        strategy = "uuid"
+    )
     @Column(name = "ORDER_ID")
     private String id;
 
     @Column(name = "ORDERED_BY")
     private String orderedBy;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ORDER_ID", nullable = false)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    @JoinColumn(
+        name = "ORDER_ID",
+        nullable = false
+    )
     List<OrderContentJpa> contents = new ArrayList<>();
 
     public String getId() {
@@ -59,9 +68,7 @@ public class OrderJpa {
     }
 
     public void removeContent(BeanTypeEnum type) {
-        OrderContentJpa content = findMatchingContent(
-            type.getName(), this.contents
-        );
+        OrderContentJpa content = findMatchingContent(type.getName(), this.contents);
 
         this.contents.remove(content);
     }

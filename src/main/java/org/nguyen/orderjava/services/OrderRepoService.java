@@ -33,8 +33,6 @@ public class OrderRepoService {
     }
 
     public OrderJpa saveOrder(OrderJpa orderEntry) {
-        OrderJpa savedEntity = orderRepo.save(orderEntry);
-
-        return savedEntity;
+        return orderRepo.save(orderEntry);
     }
 }

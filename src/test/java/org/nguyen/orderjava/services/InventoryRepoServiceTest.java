@@ -2,8 +2,8 @@ package org.nguyen.orderjava.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ class InventoryRepoServiceTest {
     @Test
     void Given_BeanDataExists_When_AQueryForBeanByTypeIsMade_Then_BeanDataShouldBeReturned() {
         InventoryEntryJpa entry = new InventoryEntryJpa(
-                BeanTypeEnum.ARABICA,
-                new BigDecimal("0"),
-                new BigDecimal("0"),
-                0
+            BeanTypeEnum.ARABICA,
+            new BigDecimal("0"),
+            new BigDecimal("0"),
+            0
         );
         Optional<InventoryEntryJpa> mock = null;
         entry.setBeanType(BeanTypeEnum.ARABICA);

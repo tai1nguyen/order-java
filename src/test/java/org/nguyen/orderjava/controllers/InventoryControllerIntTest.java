@@ -26,13 +26,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(
-    exclude = {
-        DataSourceAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
-    }
-)
+@EnableAutoConfiguration(exclude = {
+    DataSourceAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class
+})
 class InventoryControllerIntTest {
 
     private final String INVENTORY_RESPONSE_SCHEMA = "json/inventory-response.schema.json";
@@ -51,46 +49,39 @@ class InventoryControllerIntTest {
     @Test
     void Given_BeanDataExists_When_ARequestIsMadeForBeanDataByType_Then_BeanDataShouldBeReturned() {
         InventoryEntryJpa mock = new InventoryEntryJpa(
-                BeanTypeEnum.ARABICA,
-                new BigDecimal("1"),
-                new BigDecimal("0"),
-                1
+            BeanTypeEnum.ARABICA,
+            new BigDecimal("1"),
+            new BigDecimal("0"),
+            1
         );
         when(inventoryRepo.findById(any())).thenReturn(Optional.of(mock));
 
-        given()
-                .port(portNumber)
-                .queryParam("beanType", BeanTypeEnum.ARABICA.getName())
-        .when()
-                .get("/order-java/v1/inventory/bean")
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(INVENTORY_RESPONSE_SCHEMA));
+        given().port(portNumber)
+            .queryParam("beanType", BeanTypeEnum.ARABICA.getName())
+            .when()
+            .get("/order-java/v1/inventory/bean")
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(INVENTORY_RESPONSE_SCHEMA));
     }
 
     @Test
     void Given_BeanDataExists_When_ARequestIsMadeForAllBeanData_Then_AllBeanDataShouldBeReturnedInAList() {
         List<InventoryEntryJpa> list = new ArrayList<>();
         list.add(
-                new InventoryEntryJpa(
-                        BeanTypeEnum.ARABICA,
-                        new BigDecimal("1"),
-                        new BigDecimal("0"),
-                        1
-                )
+            new InventoryEntryJpa(BeanTypeEnum.ARABICA, new BigDecimal("1"), new BigDecimal("0"), 1)
         );
         when(inventoryRepo.findAll()).thenReturn(list);
 
-        given()
-                .port(portNumber)
-        .when()
-                .get("/order-java/v1/inventory/beans")
-        .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(matchesJsonSchemaInClasspath(INVENTORY_LIST_RESPONSE_SCHEMA));
+        given().port(portNumber)
+            .when()
+            .get("/order-java/v1/inventory/beans")
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.OK.value())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(matchesJsonSchemaInClasspath(INVENTORY_LIST_RESPONSE_SCHEMA));
     }
 }

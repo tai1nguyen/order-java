@@ -31,10 +31,10 @@ public class InventoryEntryJpa {
     public InventoryEntryJpa() {}
 
     public InventoryEntryJpa(
-            BeanTypeEnum beanType,
-            BigDecimal weightPerUnit,
-            BigDecimal pricePerUnit,
-            Integer quantity
+        BeanTypeEnum beanType,
+        BigDecimal weightPerUnit,
+        BigDecimal pricePerUnit,
+        Integer quantity
     ) {
         this.beanType = beanType.getName();
         this.weightPerUnit = weightPerUnit.toPlainString();
