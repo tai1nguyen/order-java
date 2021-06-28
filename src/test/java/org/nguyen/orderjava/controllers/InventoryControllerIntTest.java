@@ -56,11 +56,12 @@ class InventoryControllerIntTest {
         );
         when(inventoryRepo.findById(any())).thenReturn(Optional.of(mock));
 
-        given().port(portNumber)
+        given()
+            .port(portNumber)
             .queryParam("beanType", BeanTypeEnum.ARABICA.getName())
-            .when()
+        .when()
             .get("/order-java/v1/inventory/bean")
-            .then()
+        .then()
             .assertThat()
             .statusCode(HttpStatus.OK.value())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -75,10 +76,11 @@ class InventoryControllerIntTest {
         );
         when(inventoryRepo.findAll()).thenReturn(list);
 
-        given().port(portNumber)
-            .when()
+        given()
+            .port(portNumber)
+        .when()
             .get("/order-java/v1/inventory/beans")
-            .then()
+        .then()
             .assertThat()
             .statusCode(HttpStatus.OK.value())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
