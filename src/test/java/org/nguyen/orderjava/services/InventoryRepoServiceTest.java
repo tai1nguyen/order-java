@@ -68,27 +68,22 @@ class InventoryRepoServiceTest {
 
     private List<InventoryEntryJpa> getMockInventoryList() {
         List<InventoryEntryJpa> list = new ArrayList<InventoryEntryJpa>();
-        InventoryEntryJpa mockOne = new InventoryEntryJpa();
-        InventoryEntryJpa mockTwo = new InventoryEntryJpa();
-        InventoryEntryJpa mockThree = new InventoryEntryJpa();
 
-        mockOne.setBeanType(BeanTypeEnum.ARABICA);
-        mockOne.setPricePerUnit(new BigDecimal("0"));
-        mockOne.setWeightPerUnit(new BigDecimal("0"));
-        mockOne.setQuantity(1);
-        mockTwo.setBeanType(BeanTypeEnum.EXCELSA);
-        mockTwo.setPricePerUnit(new BigDecimal("0"));
-        mockTwo.setWeightPerUnit(new BigDecimal("0"));
-        mockTwo.setQuantity(1);
-        mockThree.setBeanType(BeanTypeEnum.LIBERIAN);
-        mockThree.setPricePerUnit(new BigDecimal("0"));
-        mockThree.setWeightPerUnit(new BigDecimal("0"));
-        mockThree.setQuantity(1);
-
-        list.add(mockOne);
-        list.add(mockTwo);
-        list.add(mockThree);
+        list.add(createInventoryEntry(BeanTypeEnum.ARABICA));
+        list.add(createInventoryEntry(BeanTypeEnum.EXCELSA));
+        list.add(createInventoryEntry(BeanTypeEnum.LIBERIAN));
 
         return list;
+    }
+
+    private InventoryEntryJpa createInventoryEntry(BeanTypeEnum beanType) {
+        InventoryEntryJpa mock = new InventoryEntryJpa();
+
+        mock.setBeanType(BeanTypeEnum.ARABICA);
+        mock.setPricePerUnit(new BigDecimal("0"));
+        mock.setWeightPerUnit(new BigDecimal("0"));
+        mock.setQuantity(1);
+
+        return mock;
     }
 }

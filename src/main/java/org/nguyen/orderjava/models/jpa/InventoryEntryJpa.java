@@ -7,11 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.nguyen.orderjava.models.BeanTypeEnum;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @Entity
+@NoArgsConstructor
 @Table(name = "INVENTORY")
 public class InventoryEntryJpa {
 
@@ -27,8 +30,6 @@ public class InventoryEntryJpa {
 
     @Column(name = "QUANTITY")
     private String quantity;
-
-    public InventoryEntryJpa() {}
 
     public InventoryEntryJpa(
         BeanTypeEnum beanType,
@@ -72,15 +73,5 @@ public class InventoryEntryJpa {
 
     public void setQuantity(Integer quantity) {
         this.quantity = String.valueOf(quantity);
-    }
-
-    @Override
-    public boolean equals(Object suspect) {
-        return EqualsBuilder.reflectionEquals(this, suspect);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

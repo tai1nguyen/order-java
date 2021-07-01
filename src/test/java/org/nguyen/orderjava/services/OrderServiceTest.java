@@ -23,6 +23,7 @@ import org.nguyen.orderjava.models.dto.OrderUpdateDto;
 import org.nguyen.orderjava.models.jpa.InventoryEntryJpa;
 import org.nguyen.orderjava.models.jpa.OrderContentJpa;
 import org.nguyen.orderjava.models.jpa.OrderJpa;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 class OrderServiceTest {
 
@@ -105,7 +106,7 @@ class OrderServiceTest {
 
     @Test
     void Given_OrderDoesNotExist_When_ARequestToDeleteOrderIsMade_Then_ExceptionShouldBeThrown() {
-        doThrow(new OrderNotFoundException(null)).when(orderRepoService).deleteOrderById("1");
+        doThrow(new EmptyResultDataAccessException(1)).when(orderRepoService).deleteOrderById("1");
 
         assertThrows(OrderNotFoundException.class, () -> {
             orderService.deleteOrder("1");
