@@ -2,8 +2,11 @@
 A simple **Spring Boot** CRUD application for ordering coffee beans. A personal project to help with learning **Spring** technologies, **Hibernate**, and **SQL**.
 
 ## Prerequisites
-- Java 15
-- Gradle 6.7.1
+- This service uses:
+    1. Java 15
+    2. Gradle 6.7.1
+
+**NOTE:** If you do not have either, it is recommended, but not required, that you use [SDKMAN](https://sdkman.io/) to install and manage both development kits.
 
 ## Todo
 - [X] create initial application
@@ -41,4 +44,4 @@ A simple **Spring Boot** CRUD application for ordering coffee beans. A personal 
     2. `"editor.formatOnSave": true`
         - Enables automatic formatting of the active file when it is saved.
         - **NOTE:** if VSCode is already set up to automatically save files you may want to disable this property and only execute formatting manually.
-- Manually initiating formatting can be done with `shift + option + f`.
+- Manually formatting files can be done with `shift + option + f`.
