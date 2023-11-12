@@ -8,7 +8,7 @@ on:
       - synchronize
 jobs:
   verify:
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         if: ${{ github.event_name == 'push' }}
@@ -19,5 +19,5 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'oracle'
-          java-version: '15'
+          java-version: '20'
       - run: ./gradlew test
