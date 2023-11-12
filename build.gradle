@@ -7,7 +7,7 @@ plugins {
 
 group = 'org.nguyen'
 version = 'Local-Dev'
-sourceCompatibility = '15'
+sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
