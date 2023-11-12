@@ -1,0 +1,23 @@
+name: verify
+on:
+  push:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+jobs:
+  verify:
+    runs-on: unbuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        if: ${{ github.event_name == 'push' }}
+      - uses: actions/checkout@v3
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          ref: 'refs/pull/${{ github.event.number }}/merge'
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '15'
+      - run: ./gradlew test
